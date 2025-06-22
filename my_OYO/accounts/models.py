@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+
 class HotelUser(User):
     profile_picture = models.ImageField(upload_to="profile")
     phone_number =  models.CharField(unique = True , max_length= 100)
