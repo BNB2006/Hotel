@@ -17,21 +17,21 @@ def login_page(request):
 
         if not hotel_user.exists():
             messages.warning(request, "No Account Found.")
-            return redirect('/account/login/')
+            return redirect('/accounts/login/')
 
         if not hotel_user[0].is_verified:
             messages.warning(request, "Account not verified")
-            return redirect('/account/login/')
+            return redirect('/accounts/login/')
 
         hotel_user = authenticate(username = hotel_user[0].username , password=password)
 
         if hotel_user:
             messages.success(request, "Login Success")
             login(request , hotel_user)
-            return redirect('/account/login/')
+            return redirect('/accounts/login/')
 
         messages.warning(request, "Invalid credentials")
-        return redirect('/account/login/')
+        return redirect('/accounts/login/')
     return render(request, 'login.html')
 
 
@@ -68,7 +68,9 @@ def register(request):
         messages.success(request, "An email Sent to your Email")
         return redirect('/accounts/register/')
 
+
     return render(request, 'register.html')
+
 
 
 def verify_email_token(request, token):
@@ -77,6 +79,6 @@ def verify_email_token(request, token):
         hotel_user.is_verified = True
         hotel_user.save()
         messages.success(request, "Email verified")
-        return redirect('/account/login/')
+        return redirect('/accounts/login/')
     except HotelUser.DoesNotExist:
         return HttpResponse("Invalid Token")

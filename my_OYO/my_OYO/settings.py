@@ -82,6 +82,9 @@ DATABASES = {
         'PASSWORD': '',
         'HOST':'localhost',
         'PORT':'3306',
+        'OPTIONS': {
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
     }
 }
 
@@ -133,5 +136,5 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com' 
 EMAIL_USE_TLS = True 
 EMAIL_PORT = 587 
-# EMAIL_HOST_USER = "your_email@example.com" 
-# EMAIL_HOST_PASSWORD ="your_email_password"
+EMAIL_HOST_USER = "centipersec5@gmail.com" 
+EMAIL_HOST_PASSWORD ="hkhn yfse dwdg ihdq"

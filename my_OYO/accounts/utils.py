@@ -7,15 +7,14 @@ def generateRandomToken():
     return str(uuid.uuid4())
 
 
+
+
 def sendEmailToken(email , token):
     subject = "Verify Your Email Address"
-    message = f''' please click the link below to verify your email address:
-
-    http://127.0.0.1:8000/accounts/register/{token}
-
-    If you did not request this, please ignore this email.
-    Thank you!
-    '''
+    message = f"""Hi Please verify you email account by clicking this link 
+    http://127.0.0.1:8000/accounts/verify-account/{token}
+    
+    """
     send_mail(
        subject,
        message,
