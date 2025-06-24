@@ -9,10 +9,11 @@ def generateRandomToken():
 
 
 
-def sendEmailToken(email , token):
+def sendEmailToken(email , token, user):
     subject = "Verify Your Email Address"
     message = f"""Hi Please verify you email account by clicking this link 
-    http://127.0.0.1:8000/accounts/verify-account/{token}
+
+    http://127.0.0.1:8000/accounts/verify-{user}/{token}
     
     """
     send_mail(
