@@ -1,0 +1,50 @@
+<!--add_hotel.html-->
+{% extends "utils/vendor_base.html" %}
+
+{% block start %}
+
+<div class="container mt-5 pt-5 pb-5">
+
+  <div class="col-6 mx-auto card shadow p-4" style="border:none">
+    <h2>Add Hotel</h2>
+      <form method="POST">
+    
+
+          <div class="mb-3">
+            <label for="exampleInputEmail1" class="form-label">Hotel Name</label>
+            <input id="email" type="text" name="hotel_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+          </div>
+
+          <div class="mb-3">
+            <div class="form-floating">
+                <textarea name="hotel_description" class="form-control" placeholder="Leave a comment here" id="floatingTextarea"></textarea>
+                <label for="floatingTextarea">Hotel Description</label>
+              </div> </div>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Price</label>
+                <input id="email" type="number" name="hotel_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+              </div>
+
+
+
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Offer Price</label>
+                <input id="email" type="number" name="hotel_offer_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+              </div>
+
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Hotel Location</label>
+                <input id="email" type="text" name="hotel_location" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+
+              </div>
+          <button type="submit" class="btn btn-primary">Submit</button>
+
+        </form>
+  </div>
+  </div>
+
+
+{% endblock %}

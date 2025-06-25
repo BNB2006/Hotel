@@ -1,8 +1,42 @@
-<!--vendor-dashboard-->
-
+<!--vendor_dashboard.html-->
 {% extends "utils/vendor_base.html" %}
 
 {% block start %}
+
+<div class="container mt-5 ">
+    <div class="mx-auto col-6 text-center">
+        <a href="{% url 'add_hotel'%}" class="btn btn-success"> Add Hotels</a>
+    </div>
+    <div class="row">
+    {% for hotel in hotels%}
+
+        <div class="col-md-3">
+            <div class="card shadow" style="width: 18rem;">
+                <img src="/media/{{hotel.hotel_images.first.image}}" class="card-img-top" alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">{{hotel.hotel_name}}</h5>
+                  <p class="card-text">{{hotel.hotel_description}}</p>
+
+                  {% for amenetie in hotel.ameneties.all %}
+
+                  <span class="badge text-bg-primary">{{amenetie.name}}</span>
+
+                  {% endfor%}
+
+                </div>
+                <a href="{% url 'upload_images' hotel.hotel_slug %}" class="btn btn-success">Image</a>
+                <a href="#" class="btn btn-warning">Edit</a>
+
+              </div>
+        </div>
+
+    {% endfor %}
+
+
+    </div>
+
+</div>
+
 
 
 {% endblock %}
