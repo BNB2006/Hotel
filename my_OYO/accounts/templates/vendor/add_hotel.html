@@ -8,7 +8,9 @@
   <div class="col-6 mx-auto card shadow p-4" style="border:none">
     <h2>Add Hotel</h2>
       <form method="POST">
-    
+          {% include "utils/alert.html" %}
+          {% csrf_token %}
+          
 
           <div class="mb-3">
             <label for="exampleInputEmail1" class="form-label">Hotel Name</label>

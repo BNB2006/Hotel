@@ -1,11 +1,12 @@
 from django.shortcuts import render, redirect, HttpResponse
-from .models import HotelUser, HotelVendor, Hotel, Ameneties
+from .models import HotelUser, HotelVendor, Hotel, Ameneties, HotelImages
 from django.db.models import Q
 from django.contrib import messages
 from .utils import generateRandomToken, sendEmailToken, sendOTPtoEmail , generateSlug
 from django.contrib.auth import authenticate, login
 import random
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponseRedirect
 
 # Create your views here.
 def login_page(request):    
@@ -226,13 +227,42 @@ def add_hotel(request):
             hotel_offer_price = hotel_offer_price,
             hotel_location = hotel_location,
             hotel_slug = hotel_slug,
-            hotel_owner = hotel_vendor
+            hotel_owner = hotel_vendor 
         )
-            
+        
+        for ameneti in ameneties:
+            ameneti = Ameneties.objects.get(id = ameneti)
+            hotel_obj.ameneties.add(ameneti)
+            hotel_obj.save()
+
         messages.success(request, "Hotel Created")
-        return redirect('/account/dashboard/')
+        return redirect('/accounts/dashboard/')
 
 
     ameneties = Ameneties.objects.all()
 
     return render(request, 'vendor/add_hotel.html', context = {'ameneties' : ameneties})
+
+
+@login_required(login_url='login_vendor')
+def upload_images(request, slug):
+    hotel_obj = Hotel.objects.get(hotel_slug = slug)
+    if request.method == "POST":
+        image = request.FILES['image']
+        print(image)
+        HotelImages.objects.create(
+        hotel = hotel_obj,
+        image = image
+        )
+        return HttpResponseRedirect(request.path_info)
+
+    return render(request, 'vendor/upload_images.html', context = {'images' : hotel_obj.hotel_images.all()})
+
+@login_required(login_url='login_vendor')
+def delete_image(request, id):
+    print(id)
+    print("#######")
+    hotel_image = HotelImages.objects.get(id = id)
+    hotel_image.delete()
+    messages.success(request, "Hotel Image deleted")
+    return redirect('/accounts/dashboard/')
