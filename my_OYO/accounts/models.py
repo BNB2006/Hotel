@@ -24,7 +24,6 @@ class HotelVendor(User):
         db_table = "hotel_vendor"
 
 
-
 class Ameneties(models.Model):
     name = models.CharField(max_length = 1000)
     icon = models.ImageField(upload_to="hotels")
