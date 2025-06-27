@@ -3,7 +3,7 @@ from .models import HotelUser, HotelVendor, Hotel, Ameneties, HotelImages
 from django.db.models import Q
 from django.contrib import messages
 from .utils import generateRandomToken, sendEmailToken, sendOTPtoEmail , generateSlug
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 import random
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect
@@ -149,7 +149,6 @@ def login_vendor(request):
         hotel_user = authenticate(username = hotel_user[0].username , password=password)
 
         if hotel_user:
-            messages.success(request, "Login Success")
             login(request , hotel_user)
             return redirect('/accounts/dashboard/')
 
@@ -260,8 +259,6 @@ def upload_images(request, slug):
 
 @login_required(login_url='login_vendor')
 def delete_image(request, id):
-    print(id)
-    print("#######")
     hotel_image = HotelImages.objects.get(id = id)
     hotel_image.delete()
     messages.success(request, "Hotel Image deleted")
@@ -301,3 +298,8 @@ def edit_hotel(request, slug):
     
     # Render the edit_hotel.html template with hotel and amenities as context
     return render(request, 'vendor/edit_hotel.html', context={'hotel': hotel_obj, 'ameneties': ameneties})
+
+def logout_vendor(request):
+    logout(request)
+    messages.success(request, "Logout Success")
+    return redirect('/accounts/login-vendor/')

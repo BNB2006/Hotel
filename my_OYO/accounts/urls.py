@@ -14,6 +14,7 @@ urlpatterns = [
     path('<slug>/upload-images/', views.upload_images, name="upload_images"),
     path('delete_image/<id>/', views.delete_image, name="delete_image"),
     path('edit-hotel/<slug>/', views.edit_hotel, name="edit_hotel"),
+    path('logout/', views.logout_vendor, name="logout_vendor"),
 
 
     path('verify-user/<token>/', views.verify_email_token, name="verify_email_token"),
