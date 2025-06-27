@@ -13,6 +13,7 @@ urlpatterns = [
     path('add-hotel/', views.add_hotel , name="add_hotel"),
     path('<slug>/upload-images/', views.upload_images, name="upload_images"),
     path('delete_image/<id>/', views.delete_image, name="delete_image"),
+    path('edit-hotel/<slug>/', views.edit_hotel, name="edit_hotel"),
 
 
     path('verify-user/<token>/', views.verify_email_token, name="verify_email_token"),
