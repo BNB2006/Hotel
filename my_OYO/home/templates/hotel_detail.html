@@ -1,0 +1,35 @@
+{% extends "utils/base.html" %}
+
+{% block start %}
+<div class="container">
+<div class="card-body mt-5">
+    <!-- Display the hotel name -->
+    <h5 class="card-title">{{ hotel.hotel_name }}</h5>
+
+    <!-- Display the hotel prices -->
+    Price <span class="badge text-bg-danger">{{ hotel.hotel_price }}</span>
+    Offer Price <span class="badge text-bg-success">{{ hotel.hotel_offer_price }}</span>
+    <hr>
+
+    <!-- Display the hotel location -->
+    <p>{{ hotel.hotel_location }}</p>
+
+    <!-- Display the hotel amenities -->
+    <span class="badge text-bg-primary">Swimming Pool</span>
+    <span class="badge text-bg-primary">AC</span>
+
+    <!-- Display the hotel description (with safe filter to render HTML) -->
+    <p class="mt-5">{{ hotel.hotel_description|safe }}</p>
+   <!-- Display the hotel images -->
+   
+   <div class="row">
+        {% for image in hotel.hotel_images.all %}
+            <div class="col-2">
+                <img src="/media/{{ image.image }}" style="height: 150px;">
+            </div>
+        {% endfor %}
+    </div>
+
+  <button class="btn btn-danger mt-5"> Book now </button>
+  </div>
+  </div>13247888
