@@ -1,47 +1,36 @@
 {% extends "utils/base.html" %}
 {% block start %}
-<div class="container mt-5 pt-5 pb-5">
-  <div class="col-6 mx-auto">
-    <form class="d-flex">
-      <input type="text" name="search" class="form-control" placeholder="Search">
-      <select class="form-control" name="sort_by">
-        <option value="">Choose</option>
-        <option  value="sort_low">Sort by Low to high</option>
-        <option  value="sort_high">Sort by high to Low</option>
 
 
-      </select>
-      <button type="submit" class="btn btn-warning mt-1">Search</button>
-    </form>
-  </div>
-    <div class="row">
-      {% for hotel in hotels %}
-        <div class="col-md-3 mt-3">
-            <div class="card shadow" style="width: 18rem;">
-         
-              <a href="{% url 'hotel_details' hotel.hotel_slug %}">
-              {% if hotel.hotel_images.first %}
-              <img src="/media/{{hotel.hotel_images.first.image}}" class="card-img-top" alt="...">
-               {% else %}
-
-               <img src="https://t4.ftcdn.net/jpg/04/70/29/97/360_F_470299797_UD0eoVMMSUbHCcNJCdv2t8B2g1GVqYgs.jpg" class="card-img-top" alt="...">
-{% endif %}
-              <div class="card-body">
-                  <h5 class="card-title">{{hotel.hotel_name}}</h5>
-
-                    Price <span class="badge text-bg-danger">{{hotel.hotel_price}}</span>
-                    Offer Price <span class="badge text-bg-success">{{hotel.hotel_offer_price}}</span>
-<hr>
-                  <p>{{hotel.hotel_location}}</p>
-                  <span class="badge text-bg-primary">Swimming Pool</span>
-                  <span class="badge text-bg-primary">AC</span>
-
-                </div>
-                </a>
-              </div>
+<!-- Hero Sectio -->
+ <section class="hero-section">
+  <div class="container">
+    <div class="row align-items-center">
+      <div class="col-lg-6 hero-content fade-in-up">
+        <h1 class="hero-title">myOYO</h1>
+        <h2 class="hero-subtitle">Luxury Hotel Booking</h2>
+        <p class="hero-description">
+          Discover the perfect blend of luxury, comfort, and exceptional service. 
+          Book your dream stay with our curated collection of premium hotels worldwide.
+        </p>
+        <div class="d-flex gap-3">
+          <a href="#search-section" class="btn-primary-custom">
+            <i class="fas fa-search me2"></i>Find Hotels
+          </a>
+          <a href="{% url "register" }" class="btn-secondary-custom">
+            <i class="fas fa-user-plus me2"></i>Join Now
+          </a>
         </div>
-      {% endfor %}
-       </div>
-</div>
+      </div>
+      <div class="col-lg-6 text-center fade-in-up" style="animation-delay: 0.2s;">
+        <div class="glass-card">
+          <i class="fas fa-hotel" style="font-size: 8rem; color: var(--primary-color); margin-bottom: 2rem;"></i>
+          <h3 class="mb-3">Premium Experience</h3>
+          <p class="text-muted">Handpicked luxury hotels for the discerning travelers</p>
+        </div>
+      </div>
+    </div>
+  </div>
+ </section>
 
 {% endblock %}
