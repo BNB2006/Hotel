@@ -1,26 +1,40 @@
+{% load static %}
 <!--navbar-->
-<nav class="navbar  navbar-dark bg-danger shadow-lg p-2 nav">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/"> <img height="40" src="https://i.pinimg.com/736x/60/20/3c/60203c06b364a8764b54bba1a35290c2.jpg">      </a>
+<nav class="navbar navbar-expand-lg navbar-dark shadow-lg">
+  <div class="container">
+    <a class="navbar-brand" href="/">
+      <i class="fas fa-hotel me-2"></i>myOYO
+    </a>
   
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
+    
     <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav">
+      <ul class="navbar-nav ms-auto">
         <li class="nav-item">
-          <a class="nav-link active" aria-current="page" href="/">Home</a>
+          <a class="nav-link active" aria-current="page" href="/">
+            <i class="fas fa-home me-1"></i>Home
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'login_page'%}">Login</a>
+          <a class="nav-link" href="#search-section">
+            <i class="fas fa-search me-1"></i>Search
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'register'%}">Register</a>
+          <a class="nav-link" href="{% url 'login_page'%}">
+            <i class="fas fa-sign-in-alt me-1"></i>Login
+          </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link disabled" aria-disabled="true">Disabled</a>
+          <a class="nav-link btn-primary-custom btn-sm" href="{% url 'register'%}">
+            <i class="fas fa-user-plus me-1"></i>Register
+          </a>
         </li>
       </ul>
     </div>
-    </div>
-  </nav>
+  </div>
+</nav>
+
+

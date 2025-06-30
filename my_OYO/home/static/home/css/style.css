@@ -1,0 +1,94 @@
+:root {
+  --primary-color: #ff6b35;
+  --secondary-color: #1a1a1a;
+  --accent-color: #2d2d2d;
+  --text-primary: #ffffff;
+  --text-secondary: #b0b0b0;
+  --gradient-primary: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%);
+  --gradient-dark: linear-gradient(135deg, #1a1a1a 0%, #2d2d2d 100%);
+  --glass-bg: rgba(255, 255, 255, 0.1);
+  --glass-border: rgba(255, 255, 255, 0.2);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body{
+    font-family: 'Inter', sans-serif;
+    background: var(--gradient-dark);
+    color: var(--text-primary);
+    line-height: 1.6;
+    overflow-x: hidden;
+}
+
+
+/*<-----------------------------------------------------------Navbar Styles------------------------------------------------------------> */
+.navbar{
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid var(--glass-border);
+    padding: 1rem 0;
+}
+
+.navbar-brand{
+    font-weight: 800;
+    font-size: 1.8rem;
+    color: var(--text-primary) !important;
+    text-decoration: none;
+}
+
+.nav-link{
+    color: var(--text-secondary) !important;
+    font-weight: 500;
+    transition: all 0.3 ease;
+    margin: 0 0.5rem;
+    font-size: 16px;
+    position: relative;
+}
+
+.nav-link:hover, .nav-link:active{
+    color: var(--primary-color) !important;
+    transform: translateY(-2px);
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+
+.nav-link.active::after {
+  content: '';
+  position: absolute;
+  bottom: -8px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, #ff6b6b, #ee5a24);
+  border-radius: 1px;
+}
+
+
+
+
+/*<-----------------------------------------------------------Footer Styles------------------------------------------------------------> */
+.footer{
+    background: rgba(26, 26, 26, 0.95);
+    backdrop-filter: blur(20px);
+    border-top: 1px solid var(--glass-border);
+    padding: 3rem 0 1rem;
+    margin-top: 5rem;
+}
+
+.footer a{
+    color: var(--text-secondary);
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.footer a:hover{
+    color: var(--primary-color);
+}
