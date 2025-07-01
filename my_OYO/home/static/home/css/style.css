@@ -201,7 +201,6 @@ body{
 
 
 /* Hotel Cards */
-/* Section Titles and Descriptions */
 .section-title {
   font-size: 2.2rem;
   font-weight: 700;
@@ -290,6 +289,21 @@ body{
   display: inline;
 }
 
+
+/* Glass card effect */
+.glass-card{
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  transition: all 0.3 ease;
+}
+
+.glass-card:hover{
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+}
 
 
 /*<-----------------------------------------------------------Footer Styles------------------------------------------------------------> */
