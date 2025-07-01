@@ -72,6 +72,8 @@ body{
 }
 
 
+
+
 /*<-----------------------------------------------------------Landing page Styles------------------------------------------------------------> */
 
 /* Hero section */
@@ -166,6 +168,36 @@ body{
   transform: translateY(-3px);
 }
 
+
+/* search section */
+.search-section{
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  padding: 2rem;
+  margin: 2rem 0;
+}
+
+.search-input{
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
+  border-radius: 15px;
+  color: var(--text-primary);
+  padding: 15px 20px;
+  font-size: 1rem;
+}
+
+.search-input::placeholder{
+  color: var(--text-secondary);
+}
+
+.search-input:focus{
+  background: rgba(255, 255, 255, 0.15);
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  color: var(--text-primary);
+}
 
 
 /*<-----------------------------------------------------------Footer Styles------------------------------------------------------------> */
