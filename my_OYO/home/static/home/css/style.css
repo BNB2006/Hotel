@@ -195,9 +195,101 @@ body{
 .search-input:focus{
   background: rgba(255, 255, 255, 0.15);
   border-color: var(--primary-color);
-  box-shadow: 0 0 0 3px rgba(255, 107, 53, 0.1);
+  box-shadow: 0 0 0 3px rgba(25513, 107, 53, 0.1);
   color: var(--text-primary);
 }
+
+
+/* Hotel Cards */
+/* Section Titles and Descriptions */
+.section-title {
+  font-size: 2.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+  margin-bottom: 0.5rem;
+  text-shadow: 0 2px 16px rgba(0,0,0,0.12);
+}
+
+.section-description {
+  font-size: 1.05rem;
+  color: #d1d1d1;
+  font-weight: 400;
+  margin-bottom: 2.5rem;
+  letter-spacing: 0.1px;
+  text-shadow: 0 1px 8px rgba(0,0,0,0.10);
+}
+
+/* Existing code below... */ 
+.hotel-card{
+  background: var(--glass-bg);
+  backdrop-filter: blur(20px);
+  border: 1px solid var(--glass-border);
+  border-radius: 20px;
+  overflow: hidden;
+  transition: all 0.3 ease;
+  height: 100%;
+}
+
+.hotel-card:hover{
+  transform: translateY(-10px);
+  box-shadow: 0 20px 40px rgba(0, 0, 0, 00.3);
+}
+
+.hotel-card img{
+  width: 100%;
+  height: 250px;
+  object-fit: cover;
+  transition: all 0.3 ease;
+}
+
+.hotel-card-body{
+  padding: 1.3rem;
+}
+
+.hotel-title{
+  font-size: 1.3rem;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.hotel-location{
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin-bottom: 1rem;
+}
+
+.price-badge{
+  background: var(--gradient-primary);
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.offer-badge {
+  background: #28a745;
+  color: white;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  margin-left: 10px;
+}
+
+.amenity-badge{
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-secondary);
+  padding: 3px 10px;
+  border-radius: 15px;
+  font-size: 0.8rem;
+  margin-right: 5px;
+  margin-bottom: 5px;
+  display: inline;
+}
+
 
 
 /*<-----------------------------------------------------------Footer Styles------------------------------------------------------------> */
