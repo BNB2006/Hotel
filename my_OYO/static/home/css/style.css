@@ -25,7 +25,7 @@ body{
 }
 
 
-/*<-----------------------------------------------------------Navbar Styles------------------------------------------------------------> */
+/*<----------------------------Navbar Styles----------------------------> */
 .navbar{
     background: rgba(26, 26, 26, 0.95);
     backdrop-filter: blur(20px);
@@ -41,17 +41,33 @@ body{
 }
 
 .nav-link{
+    position: relative;
     color: var(--text-secondary) !important;
     font-weight: 500;
-    transition: all 0.3 ease;
+    transition: all 0.3s ease;
     margin: 0 0.5rem;
     font-size: 16px;
-    position: relative;
 }
 
-.nav-link:hover, .nav-link:active{
-    color: var(--primary-color) !important;
-    transform: translateY(-2px);
+.nav-link::after {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -6px;
+  height: 3px;
+  border-radius: 2px;
+  background: var(--primary-color);
+  opacity: 0;
+  transform: scaleX(0);
+  transition: all 0.3s cubic-bezier(.4,1.5,.5,1);
+}
+
+.nav-link.active::after,
+.nav-link:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
 }
 
 .navbar-nav {
@@ -60,21 +76,11 @@ body{
   gap: 32px;
 }
 
-.nav-link.active::after {
-  content: '';
-  position: absolute;
-  bottom: -8px;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #ff6b6b, #ee5a24);
-  border-radius: 1px;
-}
 
 
 
 
-/*<-----------------------------------------------------------Landing page Styles------------------------------------------------------------> */
+/*<-----------------------------Landing page Styles-----------------------------> */
 
 /* Hero section */
 .hero-section{
@@ -116,7 +122,6 @@ body{
   color: var(--primary-color);
   font-weight: 600;
   margin-bottom: 2rem;
-
 }
 
 .hero-description{
@@ -306,7 +311,7 @@ body{
 }
 
 
-/*<-----------------------------------------------------------Footer Styles------------------------------------------------------------> */
+/*<------------------------------Footer Styles------------------------------> */
 .footer{
     background: rgba(26, 26, 26, 0.95);
     backdrop-filter: blur(20px);
@@ -376,7 +381,7 @@ body{
 
 
 
-/*<-----------------------------------------------------------Login form Styles------------------------------------------------------------> */
+/*<------------------------------Login form Styles----------------------------> */
 /* Auth (Login/Register) Card Styles */
 .auth-vertical-center {
   min-height: 100vh;
@@ -385,7 +390,7 @@ body{
   justify-content: center;
 }
 .auth-card {
-  max-width: 400px;
+  max-width: 740px;
   margin: 0 auto;
   background: var(--glass-bg);
   border: 1px solid var(--glass-border);
