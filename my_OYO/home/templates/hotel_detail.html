@@ -2,61 +2,171 @@
 {% extends "utils/base.html" %}
 
 {% block start %}
-<div class="container">
+<div class="container py-5">
+  <div class="row">
+    <!-- Hotel Images Gallery -->
+    <div class="col-lg-8 mb-4">
+      <div class="glass-card">
+        {% if hotel.hotel_images.first %}
+          <img src="/media/{{hotel.hotel_images.first.image}}" class="img-fluid rounded" alt="{{hotel.hotel_name}}" style="width: 100%; height: 400px; object-fit: cover;">
+        {% else %}
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="img-fluid rounded" alt="Luxury Hotel" style="width: 100%; height: 400px; object-fit: cover;">
+        {% endif %}
+        
+        <!-- Additional Images -->
+        {% if hotel.hotel_images.count > 1 %}
+          <div class="row mt-3">
+            {% for image in hotel.hotel_images.all|slice:"1:5" %}
+              <div class="col-3">
+                <img src="/media/{{image.image}}" class="img-fluid rounded" style="height: 100px; width: 100%; object-fit: cover;" alt="Hotel Image">
+              </div>
+            {% endfor %}
+          </div>
+        {% endif %}
+      </div>
+    </div>
 
-
-<div class="card-body mt-5">
-    <h5 class="card-title">{{hotel.hotel_name}}</h5>
-
-      Price <span class="badge text-bg-danger">{{hotel.hotel_price}}</span>
-      Offer Price <span class="badge text-bg-success">{{hotel.hotel_offer_price}}</span>
-<hr>
-    <p>{{hotel.hotel_location}}</p>
-    <span class="badge text-bg-primary">Swimming Pool</span>
-    <span class="badge text-bg-primary">AC</span>
-
-    <p class="mt-5">{{hotel.hotel_description|safe}}</p>
-
-    <div class="row">
-        {% for image in hotel.hotel_images.all %}
-
-        <div class="col-2">
-            <img src="/media/{{image.image}}" style="height: 150px ;">
-
+    <!-- Hotel Info & Booking -->
+    <div class="col-lg-4">
+      <div class="glass-card h-100">
+        <h2 class="hotel-title mb-3">{{hotel.hotel_name}}</h2>
+        
+        <div class="mb-3">
+          <p class="hotel-location">
+            <i class="fas fa-map-marker-alt me-2"></i>{{hotel.hotel_location}}
+          </p>
         </div>
 
-        {% endfor %}
+        <div class="mb-4">
+          <div class="d-flex align-items-center mb-2">
+            <span class="price-badge me-2">₹{{hotel.hotel_price}}</span>
+            {% if hotel.hotel_offer_price %}
+              <span class="offer-badge">₹{{hotel.hotel_offer_price}}</span>
+            {% endif %}
+          </div>
+          {% if hotel.hotel_offer_price %}
+            <small class="text-muted">Save ₹{{hotel.hotel_price|add:"-"|add:hotel.hotel_offer_price}} on this booking!</small>
+          {% endif %}
+        </div>
 
+        <div class="mb-4">
+          <h5 class="mb-3">Amenities</h5>
+          <div class="d-flex flex-wrap">
+            <span class="amenity-badge">
+              <i class="fas fa-swimming-pool me-1"></i>Swimming Pool
+            </span>
+            <span class="amenity-badge">
+              <i class="fas fa-snowflake me-1"></i>AC
+            </span>
+            <span class="amenity-badge">
+              <i class="fas fa-wifi me-1"></i>WiFi
+            </span>
+            <span class="amenity-badge">
+              <i class="fas fa-parking me-1"></i>Parking
+            </span>
+            <span class="amenity-badge">
+              <i class="fas fa-utensils me-1"></i>Restaurant
+            </span>
+            <span class="amenity-badge">
+              <i class="fas fa-dumbbell me-1"></i>Gym
+            </span>
+          </div>
         </div>
 
         {% if request.user.is_authenticated %}
-
-        <form method ="POST">
-            {% csrf_token %}
-        {% include "utils/alert.html" %}
-
-            <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Start Date</label>
-                <input type="date" name="start_date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
+          <div class="booking-form">
+            <h5 class="mb-3">Book Your Stay</h5>
+            <form method="POST">
+              {% csrf_token %}
+              {% include "utils/alert.html" %}
+              
+              <div class="mb-3">
+                <label for="start_date" class="form-label">
+                  <i class="fas fa-calendar-alt me-2"></i>Check-in Date
+                </label>
+                <input type="date" name="start_date" class="form-control search-input" id="start_date" required>
               </div>
 
               <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">End Date</label>
-                <input type="date" name="end_date" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
+                <label for="end_date" class="form-label">
+                  <i class="fas fa-calendar-alt me-2"></i>Check-out Date
+                </label>
+                <input type="date" name="end_date" class="form-control search-input" id="end_date" required>
               </div>
 
-            <button type="submit" class="btn btn-danger mt-5">Book now</button>
-        </form>
-     {% else %}
+              <button type="submit" class="btn-primary-custom w-100">
+                <i class="fas fa-credit-card me-2"></i>Book Now
+              </button>
+            </form>
+          </div>
+        {% else %}
+          <div class="text-center">
+            <p class="text-muted mb-3">Please login to book this hotel</p>
+            <a href="{% url 'login_page' %}" class="btn-primary-custom me-2">
+              <i class="fas fa-sign-in-alt me-2"></i>Login
+            </a>
+            <a href="{% url 'register' %}" class="btn-secondary-custom">
+              <i class="fas fa-user-plus me-2"></i>Register
+            </a>
+          </div>
+        {% endif %}
+      </div>
+    </div>
+  </div>
 
-     <a href="{% url 'login_page' %}" class="btn btn-success">Login</a>
-     {% endif %}
+  <!-- Hotel Description -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="glass-card">
+        <h3 class="mb-4">About {{hotel.hotel_name}}</h3>
+        <div class="hotel-description">
+          {{hotel.hotel_description|safe}}
+        </div>
+      </div>
+    </div>
+  </div>
 
+  <!-- Similar Hotels -->
+  <div class="row mt-5">
+    <div class="col-12">
+      <div class="glass-card">
+        <h3 class="mb-4">Similar Hotels</h3>
+        <div class="row">
+          <div class="col-md-4 mb-3">
+            <div class="hotel-card">
+              <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="card-img-top" alt="Similar Hotel">
+              <div class="hotel-card-body">
+                <h5 class="hotel-title">Luxury Resort & Spa</h5>
+                <p class="hotel-location">Mumbai, Maharashtra</p>
+                <span class="price-badge">₹8,500</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="hotel-card">
+              <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2068&q=80" class="card-img-top" alt="Similar Hotel">
+              <div class="hotel-card-body">
+                <h5 class="hotel-title">Grand Palace Hotel</h5>
+                <p class="hotel-location">Delhi, NCR</p>
+                <span class="price-badge">₹12,000</span>
+              </div>
+            </div>
+          </div>
+          <div class="col-md-4 mb-3">
+            <div class="hotel-card">
+              <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="card-img-top" alt="Similar Hotel">
+              <div class="hotel-card-body">
+                <h5 class="hotel-title">Ocean View Resort</h5>
+                <p class="hotel-location">Goa, India</p>
+                <span class="price-badge">₹15,500</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </div>
 
-
-
 {% endblock %}
+
