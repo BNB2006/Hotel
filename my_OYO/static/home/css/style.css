@@ -371,3 +371,60 @@ body{
 @keyframes spin {
   to { transform: rotate(360deg); }
 } 
+
+
+
+
+
+/*<-----------------------------------------------------------Login form Styles------------------------------------------------------------> */
+/* Auth (Login/Register) Card Styles */
+.auth-card {
+  max-width: 400px;
+  margin: 60px auto 0 auto;
+  background: var(--glass-bg);
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.25);
+  padding: 2.5rem 2rem 2rem 2rem;
+  backdrop-filter: blur(16px);
+  color: var(--text-primary);
+  text-align: center;
+}
+.auth-title {
+  font-size: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
+  color: var(--primary-color);
+  letter-spacing: 1px;
+}
+.auth-input {
+  background: rgba(255,255,255,0.08);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  color: var(--text-primary);
+  padding: 14px 16px;
+  font-size: 1rem;
+  margin-bottom: 1.2rem;
+  width: 100%;
+  transition: border 0.2s;
+}
+.auth-input:focus {
+  border-color: var(--primary-color);
+  background: rgba(255,255,255,0.13);
+  outline: none;
+}
+.auth-btn {
+  width: 100%;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}
+.auth-link {
+  color: var(--primary-color);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+.auth-link:hover {
+  color: #fff;
+  text-decoration: underline;
+}
