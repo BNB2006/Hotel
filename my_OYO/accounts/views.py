@@ -6,7 +6,7 @@ from .utils import generateRandomToken, sendEmailToken, sendOTPtoEmail , generat
 from django.contrib.auth import authenticate, login, logout
 import random
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect
+from django.http import HttpResponseRedirect, JsonResponse
 
 # Create your views here.
 def login_page(request):    
@@ -96,38 +96,47 @@ def verify_email_token_vendor(request, token):
         return redirect('/accounts/login-vendor/')
     except HotelUser.DoesNotExist:
         return HttpResponse("Invalid Token")
-
-def send_otp(request, email):
-
-    hotel_user = HotelUser.objects.filter(
-            email = email)
-
-    if not hotel_user.exists():
-        messages.warning(request, "No Account Found.")
-        return redirect('/accounts/login/')
     
-    otp = random.randint(1000, 9999)
-    hotel_user.update(otp = otp)
-    
-    sendOTPtoEmail(email, otp)
 
-    return redirect(f'/accounts/verify-otp/{email}')
+def send_otp_page(request):
+    return render(request, 'verify_otp.html')
 
-def verify_otp(request , email):
+def ajax_send_otp(request):
     if request.method == "POST":
-        otp  = request.POST.get('otp')
-        hotel_user = HotelUser.objects.get(email = email)
+        email = request.POST.get('email')
+        hotel_user = HotelUser.objects.filter(email=email)
+        if not hotel_user.exists():
+            return JsonResponse({'success': False, 'message': 'No Account Found.'})
+        otp = random.randint(1000, 9999)
+        hotel_user.update(otp=otp)
+        sendOTPtoEmail(email, otp)
+        # Store email in session for verification step
+        request.session['otp_email'] = email
+        return JsonResponse({'success': True, 'message': 'OTP sent to your email.'})
+    return JsonResponse({'success': False, 'message': 'Invalid request.'})
 
-        if otp == hotel_user.otp:
+def verify_otp(request):
+    if request.method == "POST":
+        otp = request.POST.get('otp')
+        email = request.session.get('otp_email')
+        if not email:
+            messages.warning(request, "Session expired. Please try again.")
+            return redirect('login_page')
+        try:
+            hotel_user = HotelUser.objects.get(email=email)
+        except HotelUser.DoesNotExist:
+            messages.warning(request, "No Account Found.")
+            return redirect('login_page')
+        if otp == str(hotel_user.otp):
+            login(request, hotel_user)
             messages.success(request, "Login Success")
-            login(request , hotel_user)
-            return redirect('/accounts/login/')
-
-        messages.warning(request, "Wrong OTP")
-        return redirect(f'/accounts/verify-otp/{email}/')
-
-    return render(request , 'verify_otp.html')
-
+            # Remove email from session
+            request.session.pop('otp_email', None)
+            return redirect('/')
+        else:
+            messages.warning(request, "Wrong OTP")
+            return render(request, 'verify_otp.html')
+    return render(request, 'verify_otp.html')
 
 def login_vendor(request):    
     if request.method == "POST":
