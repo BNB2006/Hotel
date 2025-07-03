@@ -1,74 +1,44 @@
 {% extends "utils/vendor_base.html" %}
+
 {% block start %}
-<div class="container mt-5 pt-5 pb-5">
-
-  <div class="col-6 mx-auto card shadow p-4" style="border:none">
-    <h2>Edit Hotel</h2>
-
-    <!-- {{hotel}}
-
-    <ul class="list-group">
-    {% for booking in hotel.bookings.all %}
-        <li class="list-group-item">Start Date - {{booking.booking_start_date}}  End Date - {{booking.booking_end_date}}</li>
-
-        {% endfor %}
-    </ul> -->
-
-      <form method="POST">
-        {% include "utils/alert.html" %}
-        {% csrf_token %}
-
-          <div class="mb-3">
-            <label for="exampleInputEmail1" class="form-label">Hotel Name</label>
-            <input id="email" type="text" value="{{hotel.hotel_name}}" name="hotel_name" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
-          </div>
-
-          <div class="mb-3">
-            <label for="floatingTextarea">Hotel Description</label>
-            <div class="form-floating">
-
-                <textarea name="hotel_description" id="flora" class="form-control" 
-                placeholder="Leave a comment here" > {{hotel.hotel_description}}</textarea>
-
-              </div> </div>
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Hotel Price</label>
-                <input id="email" type="number" value="{{hotel.hotel_price}}" name="hotel_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
-              </div>
-
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Hotel ameneties</label>
-
-              <select name="ameneties" class="form-select form-select-sm" multiple aria-label="Small select example">
-                {% for amenetie in ameneties %}
-
-                <option value="{{amenetie.id}}" {% if amenetie  in hotel.ameneties.all %}
-                    selected {% endif %}>{{amenetie.name}}  </option>
-
-                {% endfor %}
-              </select>
-              </div>
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Hotel Offer Price</label>
-                <input id="email" type="number" value="{{hotel.hotel_offer_price}}" name="hotel_offer_price" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
-              </div>
-
-              <div class="mb-3">
-                <label for="exampleInputEmail1" class="form-label">Hotel Location</label>
-                <input id="email" type="text" value="{{hotel.hotel_location}}" name="hotel_location" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
-
-              </div>
-          <button type="submit" class="btn btn-primary">Submit</button>
-
-        </form>
+<div class="dashboard-content">
+  <div class="glass-card add-hotel-card">
+    <h2 class="dashboard-title">Edit Hotel</h2>
+    <form method="POST" class="dashboard-form">
+      {% include "utils/alert.html" %}
+      {% csrf_token %}
+      <div class="form-group stacked">
+        <label for="hotel_name">Hotel Name</label>
+        <input type="text" name="hotel_name" id="hotel_name" class="form-input stacked-top" placeholder="Enter hotel name" value="{{hotel.hotel_name}}">
+        <label for="hotel_description">Hotel Description</label>
+        <textarea name="hotel_description" id="flora" class="form-input stacked-middle" placeholder="Describe your hotel">{{hotel.hotel_description}}</textarea>
+        <label>Hotel Amenities</label>
+        <div class="amenities-checkbox-group stacked-bottom">
+          {% for amenetie in ameneties %}
+          <label class="checkbox-label">
+            <input type="checkbox" name="ameneties[]" value="{{amenetie.id}}" class="form-checkbox" {% if amenetie in hotel.ameneties.all %}checked{% endif %}>
+            <span>{{amenetie.name}}</span>
+          </label>
+          {% endfor %}
+        </div>
+      </div>
+      <div class="form-group">
+        <label for="hotel_price">Hotel Price</label>
+        <input type="number" name="hotel_price" id="hotel_price" class="form-input" placeholder="Price per night" value="{{hotel.hotel_price}}">
+      </div>
+      <div class="form-group">
+        <label for="hotel_offer_price">Hotel Offer Price</label>
+        <input type="number" name="hotel_offer_price" id="hotel_offer_price" class="form-input" placeholder="Offer price (optional)" value="{{hotel.hotel_offer_price}}">
+      </div>
+      <div class="form-group">
+        <label for="hotel_location">Hotel Location</label>
+        <input type="text" name="hotel_location" id="hotel_location" class="form-input" placeholder="Location" value="{{hotel.hotel_location}}">
+      </div>
+      <button type="submit" class="dashboard-btn">Submit</button>
+    </form>
   </div>
-  </div>
-
- <script>
-	    var editor = new FroalaEditor('#flora');		
-  </script>
-
+</div>
+<script>
+  var editor = new FroalaEditor('#flora');
+</script>
 {% endblock %}

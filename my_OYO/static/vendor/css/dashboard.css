@@ -228,3 +228,179 @@ body {
 .widget-bookings .widget-icon { background: rgba(16, 185, 129, 0.2); color: #10b981; }
 .widget-revenue .widget-icon { background: rgba(245, 158, 11, 0.2); color: #f59e0b; }
 .widget-views .widget-icon { background: rgba(239, 68, 68, 0.2); color: #ef4444; }
+
+/* --- Add Hotel Page Modern Styles --- */
+.glass-card.add-hotel-card {
+  max-width: 480px;
+  margin: 40px auto;
+  padding: 2.5rem 2rem;
+  background: rgba(30, 32, 40, 0.65);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(12px);
+  border: 1.5px solid rgba(255,255,255,0.12);
+}
+
+.dashboard-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.3rem;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-input,
+.form-input:focus,
+.form-input:active,
+.dashboard-form select {
+  background: rgba(255,255,255,0.08);
+  color: #f3f3f7;
+  border: 1.2px solid rgba(255,255,255,0.18);
+  border-radius: 10px;
+  padding: 0.85rem 1rem;
+  font-size: 1rem;
+  outline: none;
+  transition: border 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.07);
+  margin-top: 0.1rem;
+}
+
+.form-input:focus,
+.dashboard-form select:focus {
+  border: 1.5px solid #ff4d4f;
+  background: rgba(255,255,255,0.13);
+}
+
+.dashboard-form label {
+  color: #e0e0e0;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  margin-bottom: 0.1rem;
+  margin-top: 0.5rem;
+}
+
+.dashboard-btn {
+  background: linear-gradient(90deg, #ff4d4f 0%, #ff7e5f 100%);
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  padding: 0.95rem 0;
+  font-size: 1.08rem;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  cursor: pointer;
+  margin-top: 0.5rem;
+  box-shadow: 0 2px 8px 0 rgba(255,77,79,0.10);
+  transition: background 0.2s, box-shadow 0.2s;
+}
+
+.dashboard-btn:hover,
+.dashboard-btn:focus {
+  background: linear-gradient(90deg, #ff7e5f 0%, #ff4d4f 100%);
+  box-shadow: 0 4px 16px 0 rgba(255,77,79,0.18);
+}
+
+/* Responsive for mobile */
+@media (max-width: 600px) {
+  .glass-card.add-hotel-card {
+    padding: 1.2rem 0.5rem;
+    max-width: 98vw;
+  }
+}
+
+/* Amenities checkbox group styling */
+.amenities-checkbox-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.1rem 1.0rem;
+  margin-top: 0.2rem;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: 1rem;
+  color: #e0e0e0;
+  background: rgba(255,255,255,0.04);
+  padding: 0.35rem 0.7rem 0.35rem 0.4rem;
+  border-radius: 7px;
+  cursor: pointer;
+  transition: background 0.18s;
+}
+
+.checkbox-label:hover {
+  background: rgba(255,255,255,0.10);
+}
+
+.form-checkbox {
+  accent-color: #ff4d4f;
+  width: 1.1em;
+  height: 1.1em;
+  border-radius: 4px;
+  border: 1.5px solid #ff4d4f;
+  background: rgba(255,255,255,0.12);
+  cursor: pointer;
+  margin-right: 0.2em;
+}
+
+.form-checkbox:focus {
+  outline: 2px solid #ff7e5f;
+  outline-offset: 1px;
+}
+
+/* Remove two-column grid for add hotel form */
+.add-hotel-grid, .form-row {
+  display: block !important;
+  grid-template-columns: none !important;
+  gap: 0 !important;
+  width: 100%;
+}
+
+/* Froala Editor Custom Styling for Dashboard Forms */
+.fr-box.fr-basic .fr-wrapper,
+.fr-box.fr-basic .fr-element,
+.fr-box.fr-basic .fr-view {
+  background: rgba(255,255,255,0.08) !important;
+  color: #f3f3f7 !important;
+  border: 1.2px solid rgba(255,255,255,0.18) !important;
+  border-radius: 10px !important;
+  padding: 0.85rem 1rem !important;
+  font-size: 1rem !important;
+  box-shadow: 0 2px 8px 0 rgba(31, 38, 135, 0.07) !important;
+}
+
+.fr-box.fr-basic .fr-element {
+  min-height: 120px !important;
+}
+
+.fr-toolbar {
+  background: rgba(30, 32, 40, 0.85) !important;
+  border-radius: 10px 10px 0 0 !important;
+  border: 1.2px solid rgba(255,255,255,0.18) !important;
+}
+
+.fr-toolbar .fr-command {
+  color: #e0e0e0 !important;
+}
+
+.fr-toolbar .fr-command.fr-btn-hover {
+  background: rgba(255,255,255,0.10) !important;
+}
+
+/* Hide Froala second toolbar (e.g., branding or extra bar) */
+.fr-box .fr-second-toolbar {
+  display: none !important;
+}
+
+/* Make Froala editor square in stacked group */
+.form-group.stacked .fr-box.fr-basic .fr-wrapper,
+.form-group.stacked .fr-box.fr-basic .fr-element,
+.form-group.stacked .fr-box.fr-basic .fr-view,
+.form-group.stacked .fr-toolbar {
+  border-radius: 0 !important;
+}

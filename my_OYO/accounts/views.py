@@ -220,7 +220,7 @@ def add_hotel(request):
     if request.method == "POST":
         hotel_name = request.POST.get('hotel_name')
         hotel_description = request.POST.get('hotel_description')
-        ameneties= request.POST.get('ameneties')
+        ameneties= request.POST.getlist('ameneties[]')
         hotel_price= request.POST.get('hotel_price')
         hotel_offer_price= request.POST.get('hotel_offer_price')
         hotel_location= request.POST.get('hotel_location')
@@ -251,6 +251,12 @@ def add_hotel(request):
 
     return render(request, 'vendor/add_hotel.html', context = {'ameneties' : ameneties})
 
+@login_required(login_url='login_vendor')
+def delete_hotel(request, slug):
+    hotel_obj = Hotel.objects.get(hotel_slug = slug)
+    hotel_obj.delete()
+    messages.success(request, "Hotel Deleted.")
+    return redirect('/accounts/dashboard/')
 
 @login_required(login_url='login_vendor')
 def upload_images(request, slug):
@@ -286,6 +292,7 @@ def edit_hotel(request, slug):
         # Retrieve updated hotel details from the form
         hotel_name = request.POST.get('hotel_name')
         hotel_description = request.POST.get('hotel_description')
+        ameneties= request.POST.getlist('ameneties[]')
         hotel_price = request.POST.get('hotel_price')
         hotel_offer_price = request.POST.get('hotel_offer_price')
         hotel_location = request.POST.get('hotel_location')
@@ -296,6 +303,11 @@ def edit_hotel(request, slug):
         hotel_obj.hotel_price = hotel_price
         hotel_obj.hotel_offer_price = hotel_offer_price
         hotel_obj.hotel_location = hotel_location
+
+        for ameneti in ameneties:
+            ameneti = Ameneties.objects.get(id = ameneti)
+            hotel_obj.ameneties.add(ameneti)
+            hotel_obj.save()
         hotel_obj.save()
         
         messages.success(request, "Hotel Details Updated")
