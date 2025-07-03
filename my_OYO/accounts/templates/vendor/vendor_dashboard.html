@@ -1,42 +1,114 @@
 <!--vendor_dashboard.html-->
 {% extends "utils/vendor_base.html" %}
 
+{% block page_title %}Dashboard Overview{% endblock %}
+
 {% block start %}
 
-<div class="container mt-5 ">
-    <div class="mx-auto col-6 text-center">
-        <a href="{% url 'add_hotel'%}" class="btn btn-success"> Add Hotels</a>
+<!-- Dashboard Widgets -->
+<div class="widget-grid">
+  <div class="widget widget-hotels">
+    <div class="widget-header">
+      <h6 class="widget-title">Total Hotels</h6>
+      <div class="widget-icon">
+        <i class="fas fa-hotel"></i>
+      </div>
     </div>
-    <div class="row">
-    {% for hotel in hotels %}
+    <h3 class="widget-value">{{ hotels.count }}</h3>
+    <p class="widget-change">+2 this month</p>
+  </div>
 
-        <div class="col-md-3">
-            <div class="card shadow" style="width: 18rem;">
-                <img src="/media/{{hotel.hotel_images.first.image}}" class="card-img-top" alt="...">
-                <div class="card-body">
-                  <h5 class="card-title">{{hotel.hotel_name}}</h5>
-                  <p class="card-text">{{hotel.hotel_description}}</p>
-
-                  {% for amenetie in hotel.ameneties.all %}
-
-                  <span class="badge text-bg-primary">{{amenetie.name}}</span>
-
-                  {% endfor%}
-
-                </div>
-                <a href="{% url 'upload_images' hotel.hotel_slug %}" class="btn btn-success">Image</a>
-                <a href="{% url 'edit_hotel' hotel.hotel_slug %}" class="btn btn-warning">Edit</a>
-
-              </div>
-        </div>
-
-    {% endfor %}
-
-
+  <div class="widget widget-bookings">
+    <div class="widget-header">
+      <h6 class="widget-title">Total Bookings</h6>
+      <div class="widget-icon">
+        <i class="fas fa-calendar-check"></i>
+      </div>
     </div>
+    <h3 class="widget-value">156</h3>
+    <p class="widget-change">+12% from last month</p>
+  </div>
 
+  <div class="widget widget-revenue">
+    <div class="widget-header">
+      <h6 class="widget-title">Revenue</h6>
+      <div class="widget-icon">
+        <i class="fas fa-dollar-sign"></i>
+      </div>
+    </div>
+    <h3 class="widget-value">₹45,230</h3>
+    <p class="widget-change">+8% from last month</p>
+  </div>
+
+  <div class="widget widget-views">
+    <div class="widget-header">
+      <h6 class="widget-title">Profile Views</h6>
+      <div class="widget-icon">
+        <i class="fas fa-eye"></i>
+      </div>
+    </div>
+    <h3 class="widget-value">1,234</h3>
+    <p class="widget-change">+15% from last month</p>
+  </div>
 </div>
 
+<!-- Quick Actions -->
+<div class="content-area">
+  <div class="d-flex justify-content-between align-items-center mb-4">
+    <h4 class="mb-0">Your Hotels</h4>
+    <a href="{% url 'add_hotel' %}" class="btn" style="background: rgba(233, 69, 96, 0.2); border: 1px solid rgba(233, 69, 96, 0.3); color: #e94560;">
+      <i class="fas fa-plus me-2"></i>Add New Hotel
+    </a>
+  </div>
 
+  {% if hotels %}
+    <div class="row">
+      {% for hotel in hotels %}
+        <div class="col-lg-4 col-md-6 mb-4">
+          <div class="card h-100" style="background: rgba(255, 255, 255, 0.05); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.1); border-radius: 15px; overflow: hidden;">
+            {% if hotel.hotel_images.first %}
+              <img src="/media/{{hotel.hotel_images.first.image}}" class="card-img-top" alt="{{hotel.hotel_name}}" style="height: 200px; object-fit: cover;">
+            {% else %}
+              <div class="card-img-top d-flex align-items-center justify-content-center" style="height: 200px; background: rgba(255, 255, 255, 0.1);">
+                <i class="fas fa-hotel fa-3x text-muted"></i>
+              </div>
+            {% endif %}
+            
+            <div class="card-body">
+              <h5 class="card-title text-light">{{hotel.hotel_name}}</h5>
+              <p class="card-text text-muted">{{hotel.hotel_description|truncatewords:20}}</p>
+              
+              <div class="mb-3">
+                {% for amenetie in hotel.ameneties.all %}
+                  <span class="badge me-1" style="background: rgba(233, 69, 96, 0.2); color: #e94560; border: 1px solid rgba(233, 69, 96, 0.3);">{{amenetie.name}}</span>
+                {% endfor %}
+              </div>
+            </div>
+            
+            <div class="card-footer" style="background: transparent; border-top: 1px solid rgba(255, 255, 255, 0.1);">
+              <div class="d-flex gap-2">
+                <a href="{% url 'upload_images' hotel.hotel_slug %}" class="btn btn-sm flex-fill" style="background: rgba(16, 185, 129, 0.2); border: 1px solid rgba(16, 185, 129, 0.3); color: #10b981;">
+                  <i class="fas fa-images me-1"></i>Images
+                </a>
+                <a href="{% url 'edit_hotel' hotel.hotel_slug %}" class="btn btn-sm flex-fill" style="background: rgba(245, 158, 11, 0.2); border: 1px solid rgba(245, 158, 11, 0.3); color: #f59e0b;">
+                  <i class="fas fa-edit me-1"></i>Edit
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="text-center py-5">
+      <i class="fas fa-hotel fa-4x text-muted mb-3"></i>
+      <h5 class="text-light">No Hotels Yet</h5>
+      <p class="text-muted">Start by adding your first hotel to get started with your dashboard.</p>
+      <a href="{% url 'add_hotel' %}" class="btn" style="background: rgba(233, 69, 96, 0.2); border: 1px solid rgba(233, 69, 96, 0.3); color: #e94560;">
+        <i class="fas fa-plus me-2"></i>Add Your First Hotel
+      </a>
+    </div>
+  {% endif %}
+</div>
 
 {% endblock %}
