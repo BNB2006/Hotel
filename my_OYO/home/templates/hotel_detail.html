@@ -78,7 +78,6 @@
             <h5 class="mb-3">Book Your Stay</h5>
             <form method="POST">
               {% csrf_token %}
-              {% include "utils/alert.html" %}
               
               <div class="mb-3">
                 <label for="start_date" class="form-label">

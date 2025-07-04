@@ -8,7 +8,6 @@
       <i class="fas fa-user-circle" style="font-size: 3rem; color: var(--primary-color);"></i>
     </div>
     <h2 class="auth-title">Sign In to myOYO</h2>
-    {% include "utils/alert.html" %}
     <form method="POST" autocomplete="off">
       {% csrf_token %}
       <input type="text" name="email" class="auth-input" placeholder="Email" required autofocus>

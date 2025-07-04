@@ -6,7 +6,6 @@
   <div class="glass-card add-hotel-card">
     <h2 class="dashboard-title">Add Hotel</h2>
     <form method="POST" class="dashboard-form">
-      {% include "utils/alert.html" %}
       {% csrf_token %}
       <div class="form-group">
         <label for="hotel_name">Hotel Name</label>

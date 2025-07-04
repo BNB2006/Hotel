@@ -28,6 +28,7 @@ def index(request):
             hotels = hotels.order_by('-hotel_offer_price')
         
 
+    messages.success(request,"Welocme")
     return render(request, 'index.html', context={'hotels':hotels[:50]})
 
 
