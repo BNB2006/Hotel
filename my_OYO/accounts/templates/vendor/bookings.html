@@ -1,0 +1,125 @@
+{% extends "utils/vendor_base.html" %}
+{% block start %}
+
+<h2 style="margin-bottom: 2rem;">Bookings</h2>
+
+<style>
+.glass-table {
+    width: 100%;
+    border-collapse: separate;
+    border-spacing: 0;
+    background: rgba(255, 255, 255, 0.10);
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+    backdrop-filter: blur(8px);
+    margin-bottom: 2rem;
+}
+.glass-table th, .glass-table td {
+    padding: 1.1rem 1.5rem;
+    text-align: left;
+    font-size: 1.08rem;
+}
+.glass-table th {
+    background: rgba(255,255,255,0.18);
+    font-weight: 600;
+    letter-spacing: 0.03em;
+}
+.glass-table tbody tr:nth-child(even) {
+    background: rgba(255,255,255,0.08);
+}
+.glass-table tbody tr:hover {
+    background: rgba(255,255,255,0.18);
+    transition: background 0.2s;
+}
+.guest-info {
+    display: flex;
+    align-items: center;
+    gap: 0.7rem;
+}
+.guest-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid #fff3;
+    background: #fff6;
+}
+@media (max-width: 900px) {
+    .glass-table th, .glass-table td {
+        padding: 0.7rem 0.5rem;
+        font-size: 0.98rem;
+    }
+    .guest-avatar { width: 28px; height: 28px; }
+}
+@media (max-width: 600px) {
+    .glass-table, .glass-table thead, .glass-table tbody, .glass-table th, .glass-table td, .glass-table tr {
+        display: block;
+    }
+    .glass-table th {
+        position: absolute;
+        left: -9999px;
+        top: -9999px;
+    }
+    .glass-table td {
+        position: relative;
+        padding-left: 50%;
+        min-height: 40px;
+        border-bottom: 1px solid #fff2;
+    }
+    .glass-table td:before {
+        position: absolute;
+        left: 1rem;
+        top: 50%;
+        transform: translateY(-50%);
+        white-space: nowrap;
+        font-weight: 600;
+        color: #fff9;
+        content: attr(data-label);
+    }
+}
+</style>
+
+{% if bookings %}
+<div style="overflow-x:auto;">
+<table class="glass-table">
+    <thead>
+        <tr>
+            <th>Hotel</th>
+            <th>Guest</th>
+            <th>Check-in</th>
+            <th>Check-out</th>
+            <th>Price</th>
+            <th>Status</th>
+            <th>Booked At</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for booking in bookings %}
+        <tr>
+            <td data-label="Hotel">{{ booking.hotel.hotel_name }}</td>
+            <td data-label="Guest">
+                <div class="guest-info">
+                    {% if booking.booking_user.profile_picture %}
+                        <img src="{{ booking.booking_user.profile_picture.url }}" class="guest-avatar" alt="Guest profile">
+                    {% else %}
+                        <span class="guest-avatar" style="background:#eee;display:inline-block;"></span>
+                    {% endif %}
+                    <span>{{ booking.booking_user.first_name }} {{ booking.booking_user.last_name }}</span>
+                </div>
+            </td>
+            <td data-label="Check-in">{{ booking.booking_start_date|date:'M d, Y' }}</td>
+            <td data-label="Check-out">{{ booking.booking_end_date|date:'M d, Y' }}</td>
+            <td data-label="Price">₹{{ booking.price|floatformat:2 }}</td>
+            <td data-label="Status">{{ booking.status|title }}</td>
+            <td data-label="Booked At">{{ booking.created_at|date:'M d, Y H:i' }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+</div>
+{% else %}
+    <p>No bookings found for your hotels.</p>
+{% endif %}
+
+{% endblock %}

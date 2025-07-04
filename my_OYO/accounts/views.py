@@ -1,12 +1,13 @@
 from django.shortcuts import render, redirect, HttpResponse
 from .models import HotelUser, HotelVendor, Hotel, Ameneties, HotelImages
+from home.models import HotelBooking
 from django.db.models import Q
 from django.contrib import messages
 from .utils import generateRandomToken, sendEmailToken, sendOTPtoEmail , generateSlug
 from django.contrib.auth import authenticate, login, logout
 import random
 from django.contrib.auth.decorators import login_required
-from django.http import HttpResponseRedirect, JsonResponse
+from django.http import HttpResponseRedirect, JsonResponse, HttpResponseForbidden
 
 # Create your views here.
 def login_page(request):    
@@ -31,7 +32,7 @@ def login_page(request):
         if hotel_user:
             messages.success(request, "Login Success")
             login(request , hotel_user)
-            return redirect('/accounts/login/')
+            return redirect('/')
 
         messages.warning(request, "Invalid credentials")
         return redirect('/accounts/login/')
@@ -209,6 +210,13 @@ def register_vendor(request):
 
 @login_required(login_url='login_vendor')
 def dashboard(request):
+    print(request.user)
+
+    if not hasattr(request.user, 'hotelvendor'):
+        messages.error(request,"Please login as Vendor!")
+        logout(request)
+        return redirect('/accounts/login-vendor')
+    
     #Retrive hotels owned by the current vendor
     hotels = Hotel.objects.filter(hotel_owner = request.user)
     context = {'hotels' : hotels}
@@ -319,6 +327,15 @@ def edit_hotel(request, slug):
     
     # Render the edit_hotel.html template with hotel and amenities as context
     return render(request, 'vendor/edit_hotel.html', context={'hotel': hotel_obj, 'ameneties': ameneties})
+
+@login_required(login_url='login_vendor')
+def bookings(request):
+    # Only allow HotelVendor users
+    if not hasattr(request.user, 'hotelvendor') and not isinstance(request.user, HotelVendor):
+        return HttpResponseForbidden("You are not authorized to view this page.")
+    hotels = Hotel.objects.filter(hotel_owner=request.user)
+    bookings = HotelBooking.objects.filter(hotel__in=hotels).select_related('hotel', 'booking_user')
+    return render(request, "vendor/bookings.html", {"bookings": bookings})
 
 def logout_vendor(request):
     logout(request)

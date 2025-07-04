@@ -1,14 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import HotelBooking
-from accounts.models import Hotel, HotelUser
+from accounts.models import Hotel, HotelUser, HotelVendor
 from django.http import HttpResponseRedirect
 from django.contrib import messages
 import datetime
+from django.contrib.auth import logout
 
 # Create your views here.
 
 
 def index(request):
+    # If vendor, log out and redirect to login page
+    if request.user.is_authenticated and hasattr(request.user, 'hotelvendor'):
+        messages.error(request,"Please login as user!")
+        logout(request)
+        return redirect('/')  # or your user login URL name
+    print('user:',request.user)
     hotels = Hotel.objects.all()
     if request.GET.get('search'):
         hotels = hotels.filter(hotel_name_icontains = request.GET.get('search'))
