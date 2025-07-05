@@ -1,0 +1,630 @@
+{% extends "utils/vendor_base.html" %}
+
+{% block page_title %}Profile Settings{% endblock %}
+
+{% block start %}
+<div class="dashboard-content">
+  <div class="profile-container">
+    <!-- Profile Header Section -->
+    <div class="profile-header">
+      <div class="profile-cover">
+        <div class="profile-avatar-section">
+          <div class="profile-avatar-container">
+            {% if vendor.profile_picture %}
+              <img src="/media/{{ vendor.profile_picture }}" alt="Profile" class="profile-avatar-large" id="profileAvatarImg">
+            {% else %}
+              <div class="profile-avatar-placeholder-large" id="profileAvatarImg">
+                <i class="fas fa-user"></i>
+              </div>
+            {% endif %}
+            <div class="profile-avatar-overlay">
+              <label for="profile_picture" class="avatar-upload-btn">
+                <i class="fas fa-camera"></i>
+              </label>
+            </div>
+          </div>
+          <div id="profile-pic-message" class="profile-pic-message" style="display:none;"></div>
+        </div>
+        <div class="profile-info-header">
+          <h2 class="profile-name">{{ vendor.first_name }} {{ vendor.last_name }}</h2>
+          <p class="profile-username">@{{ vendor.username }}</p>
+          {% if vendor.business_name %}
+            <p class="profile-business">{{ vendor.business_name }}</p>
+          {% endif %}
+          <div class="profile-status">
+            {% if vendor.is_verified %}
+              <span class="status-badge verified">
+                <i class="fas fa-check-circle"></i>
+                Verified Account
+              </span>
+            {% else %}
+              <span class="status-badge unverified">
+                <i class="fas fa-exclamation-circle"></i>
+                Unverified Account
+              </span>
+            {% endif %}
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Profile Content Section -->
+    <div class="profile-content">
+      <!-- Personal Information Section -->
+      <div class="profile-section">
+        <h3 class="section-title">
+          <i class="fas fa-user-edit"></i>
+          Personal Information
+        </h3>
+        
+        <form method="POST" enctype="multipart/form-data" class="profile-form">
+          {% csrf_token %}
+          <input type="file" name="profile_picture" id="profile_picture" accept="image/*" style="display: none;">
+          
+          <div class="profile-grid">
+            <div class="profile-field">
+              <label for="username">Username</label>
+              <input type="text" name="username" id="username" class="profile-input" value="{{ vendor.username }}" required>
+            </div>
+            <div class="profile-field">
+              <label for="first_name">First Name</label>
+              <input type="text" name="first_name" id="first_name" class="profile-input" value="{{ vendor.first_name }}" required>
+            </div>
+            <div class="profile-field">
+              <label for="last_name">Last Name</label>
+              <input type="text" name="last_name" id="last_name" class="profile-input" value="{{ vendor.last_name }}" required>
+            </div>
+            <div class="profile-field">
+              <label for="business_name">Business Name</label>
+              <input type="text" name="business_name" id="business_name" class="profile-input" value="{{ vendor.business_name }}">
+            </div>
+            <div class="profile-field">
+              <label for="phone_number">Phone Number</label>
+              <input type="text" name="phone_number" id="phone_number" class="profile-input" value="{{ vendor.phone_number }}" required>
+            </div>
+            <div class="profile-field">
+              <label for="email">Email Address</label>
+              <div class="readonly-input-wrapper">
+                <input type="email" name="email" id="email" class="profile-input" value="{{ vendor.email }}" readonly>
+                <span class="readonly-lock"><i class="fas fa-lock"></i></span>
+              </div>
+              <small class="readonly-note">Changing email can cause re-vrification of email.</small>
+            </div>
+          </div>
+          
+          <div class="profile-actions">
+            <button type="submit" class="save-profile-btn" id="saveProfileBtn">
+              <i class="fas fa-save"></i>
+              Save Changes
+            </button>
+          </div>
+        </form>
+      </div>
+
+      <!-- Account Information Section -->
+      <div class="profile-section">
+        <h3 class="section-title">
+          <i class="fas fa-info-circle"></i>
+          Account Information
+        </h3>
+        
+        <div class="account-info-grid">
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-user"></i>
+            </div>
+            <div class="info-content">
+              <label>Username</label>
+              <p>{{ vendor.username }}</p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-calendar-alt"></i>
+            </div>
+            <div class="info-content">
+              <label>Date Joined</label>
+              <p>{{ vendor.date_joined|date:"F j, Y" }}</p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-clock"></i>
+            </div>
+            <div class="info-content">
+              <label>Last Login</label>
+              <p>{{ vendor.last_login|date:"F j, Y g:i A"|default:"Never" }}</p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-shield-alt"></i>
+            </div>
+            <div class="info-content">
+              <label>Account Status</label>
+              <p>{% if vendor.is_active %}Active{% else %}Inactive{% endif %}</p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-hotel"></i>
+            </div>
+            <div class="info-content">
+              <label>Total Hotels</label>
+              <p>{{ vendor.hotels.count }} hotels</p>
+            </div>
+          </div>
+          
+          <div class="info-card">
+            <div class="info-icon">
+              <i class="fas fa-calendar-check"></i>
+            </div>
+            <div class="info-content">
+              <label>Total Bookings</label>
+              <p>{{ vendor.hotels.all|length }} bookings</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+/* Profile Container */
+.profile-container {
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+/* Profile Header */
+.profile-header {
+  margin-bottom: 30px;
+}
+
+.profile-cover {
+  background: linear-gradient(135deg, rgba(233, 69, 96, 0.1) 0%, rgba(22, 33, 62, 0.3) 100%);
+  border-radius: 20px;
+  padding: 40px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  backdrop-filter: blur(10px);
+}
+
+.profile-avatar-section {
+  margin-bottom: 25px;
+}
+
+.profile-avatar-container {
+  position: relative;
+  display: inline-block;
+}
+
+.profile-avatar-large {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 4px solid rgba(233, 69, 96, 0.3);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.profile-avatar-placeholder-large {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background: rgba(233, 69, 96, 0.2);
+  border: 4px solid rgba(233, 69, 96, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  font-size: 4rem;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+}
+
+.profile-avatar-overlay {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.profile-avatar-container:hover .profile-avatar-overlay {
+  opacity: 1;
+}
+
+.avatar-upload-btn {
+  background: rgba(233, 69, 96, 0.9);
+  border: 2px solid white;
+  color: white;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.avatar-upload-btn:hover {
+  background: rgba(233, 69, 96, 1);
+  transform: scale(1.1);
+}
+
+.profile-info-header {
+  text-align: center;
+}
+
+.profile-name {
+  color: var(--text-light);
+  font-size: 2.2rem;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.profile-username {
+  color: var(--text-muted);
+  font-size: 1.1rem;
+  margin-bottom: 5px;
+}
+
+.profile-business {
+  color: var(--text-color);
+  font-size: 1.2rem;
+  font-weight: 600;
+  margin-bottom: 15px;
+}
+
+.profile-status {
+  margin-top: 15px;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  font-size: 0.9rem;
+  font-weight: 500;
+}
+
+.status-badge.verified {
+  background: rgba(16, 185, 129, 0.2);
+  color: #10b981;
+  border: 1px solid rgba(16, 185, 129, 0.3);
+}
+
+.status-badge.unverified {
+  background: rgba(245, 158, 11, 0.2);
+  color: #f59e0b;
+  border: 1px solid rgba(245, 158, 11, 0.3);
+}
+
+/* Profile Content */
+.profile-content {
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  padding: 40px;
+}
+
+.profile-section {
+  margin-bottom: 40px;
+}
+
+.profile-section:last-child {
+  margin-bottom: 0;
+}
+
+.section-title {
+  color: var(--text-color);
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-bottom: 25px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.section-title i {
+  font-size: 1.3rem;
+}
+
+/* Profile Form */
+.profile-form {
+  width: 100%;
+}
+
+.profile-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 25px;
+  margin-bottom: 30px;
+}
+
+.profile-field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.profile-field label {
+  color: var(--text-light);
+  font-weight: 500;
+  font-size: 0.95rem;
+  margin-bottom: 0;
+}
+
+.profile-input {
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  border-radius: 12px;
+  padding: 15px 18px;
+  color: var(--text-light);
+  font-size: 1rem;
+  transition: all 0.2s ease;
+}
+
+.profile-input:focus {
+  outline: none;
+  border-color: var(--text-color);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow: 0 0 0 3px rgba(233, 69, 96, 0.1);
+}
+
+.profile-input::placeholder {
+  color: var(--text-muted);
+}
+
+.profile-input[readonly] {
+  background: #23263a !important;
+  color: #888 !important;
+  border: 1px solid #23263a !important;
+  cursor: not-allowed !important;
+  opacity: 1 !important;
+}
+
+.readonly-input-wrapper {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.readonly-lock {
+  position: absolute;
+  right: 16px;
+  color: #888;
+  font-size: 1rem;
+  pointer-events: none;
+}
+
+/* Profile Actions */
+.profile-actions {
+  text-align: center;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.save-profile-btn {
+  background: linear-gradient(135deg, var(--text-color) 0%, #ff7e5f 100%);
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 15px 40px;
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  box-shadow: 0 4px 20px rgba(233, 69, 96, 0.3);
+}
+
+.save-profile-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 25px rgba(233, 69, 96, 0.4);
+}
+
+.save-profile-btn:active {
+  transform: translateY(0);
+}
+
+/* Account Information Grid */
+.account-info-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+.info-card {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 15px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  transition: all 0.2s ease;
+}
+
+.info-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+  transform: translateY(-2px);
+}
+
+.info-icon {
+  width: 50px;
+  height: 50px;
+  border-radius: 12px;
+  background: rgba(233, 69, 96, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.info-content {
+  flex: 1;
+}
+
+.info-content label {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  font-weight: 500;
+  margin-bottom: 5px;
+  display: block;
+}
+
+.info-content p {
+  color: var(--text-light);
+  font-size: 1rem;
+  font-weight: 600;
+  margin: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .profile-cover {
+    padding: 30px 20px;
+  }
+  
+  .profile-avatar-large,
+  .profile-avatar-placeholder-large {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .profile-avatar-placeholder-large {
+    font-size: 3rem;
+  }
+  
+  .profile-name {
+    font-size: 1.8rem;
+  }
+  
+  .profile-content {
+    padding: 25px 20px;
+  }
+  
+  .profile-grid {
+    grid-template-columns: 1fr;
+    gap: 20px;
+  }
+  
+  .account-info-grid {
+    grid-template-columns: 1fr;
+    gap: 15px;
+  }
+  
+  .section-title {
+    font-size: 1.3rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-avatar-large,
+  .profile-avatar-placeholder-large {
+    width: 100px;
+    height: 100px;
+  }
+  
+  .profile-avatar-placeholder-large {
+    font-size: 2.5rem;
+  }
+  
+  .profile-name {
+    font-size: 1.5rem;
+  }
+  
+  .profile-cover {
+    padding: 25px 15px;
+  }
+  
+  .profile-content {
+    padding: 20px 15px;
+  }
+  
+  .info-card {
+    padding: 15px;
+  }
+  
+  .info-icon {
+    width: 40px;
+    height: 40px;
+    font-size: 1rem;
+  }
+}
+
+.profile-pic-message {
+  color: #e94560;
+  font-size: 1rem;
+  margin-top: 12px;
+  font-weight: 500;
+  text-align: center;
+}
+.highlight-save-btn {
+  box-shadow: 0 0 0 4px #e9456055, 0 4px 20px rgba(233, 69, 96, 0.3);
+  animation: pulseSaveBtn 0.5s 2;
+}
+@keyframes pulseSaveBtn {
+  0% { box-shadow: 0 0 0 0 #e9456055; }
+  50% { box-shadow: 0 0 0 8px #e9456033; }
+  100% { box-shadow: 0 0 0 0 #e9456055; }
+}
+.readonly-note {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-top: 2px;
+  display: block;
+}
+</style>
+
+<script>
+// Preview profile picture before upload
+const profilePicInput = document.getElementById('profile_picture');
+const profilePicMessage = document.getElementById('profile-pic-message');
+const saveProfileBtn = document.getElementById('saveProfileBtn');
+
+profilePicInput.addEventListener('change', function(e) {
+  const file = e.target.files[0];
+  if (file) {
+    const reader = new FileReader();
+    reader.onload = function(e) {
+      const avatarContainer = document.querySelector('.profile-avatar-container');
+      const newAvatar = document.createElement('img');
+      newAvatar.src = e.target.result;
+      newAvatar.alt = 'Profile';
+      newAvatar.className = 'profile-avatar-large';
+      // Remove existing avatar or placeholder
+      const existingAvatar = avatarContainer.querySelector('.profile-avatar-large, .profile-avatar-placeholder-large');
+      if (existingAvatar) {
+        existingAvatar.remove();
+      }
+      // Insert new avatar before the overlay
+      const overlay = avatarContainer.querySelector('.profile-avatar-overlay');
+      avatarContainer.insertBefore(newAvatar, overlay);
+    };
+    reader.readAsDataURL(file);
+    // Show message and highlight save button
+    profilePicMessage.textContent = 'Click "Save Changes" to update your profile picture.';
+    profilePicMessage.style.display = 'block';
+    saveProfileBtn.classList.add('highlight-save-btn');
+    setTimeout(() => saveProfileBtn.classList.remove('highlight-save-btn'), 2000);
+  } else {
+    profilePicMessage.style.display = 'none';
+  }
+});
+</script>
+{% endblock %} 

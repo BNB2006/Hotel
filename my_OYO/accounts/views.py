@@ -210,16 +210,13 @@ def register_vendor(request):
 
 @login_required(login_url='login_vendor')
 def dashboard(request):
-    print(request.user)
-
     if not hasattr(request.user, 'hotelvendor'):
         messages.error(request,"Please login as Vendor!")
         logout(request)
         return redirect('/accounts/login-vendor')
-    
-    #Retrive hotels owned by the current vendor
     hotels = Hotel.objects.filter(hotel_owner = request.user)
-    context = {'hotels' : hotels}
+    vendor = request.user.hotelvendor
+    context = {'hotels': hotels, 'vendor': vendor}
     return render(request, 'vendor/vendor_dashboard.html', context)
 
 
@@ -256,8 +253,8 @@ def add_hotel(request):
 
 
     ameneties = Ameneties.objects.all()
-
-    return render(request, 'vendor/add_hotel.html', context = {'ameneties' : ameneties})
+    vendor = request.user.hotelvendor
+    return render(request, 'vendor/add_hotel.html', context={'ameneties': ameneties, 'vendor': vendor})
 
 @login_required(login_url='login_vendor')
 def delete_hotel(request, slug):
@@ -269,7 +266,7 @@ def delete_hotel(request, slug):
 @login_required(login_url='login_vendor')
 def upload_images(request, slug):
     hotel_obj = Hotel.objects.get(hotel_slug = slug)
-
+    vendor = request.user.hotelvendor
     if request.method == "POST":
         image = request.FILES['image']
         HotelImages.objects.create(
@@ -279,7 +276,7 @@ def upload_images(request, slug):
         messages.success(request, "image uploaded succesfully")
         return HttpResponseRedirect(request.path_info)
 
-    return render(request, 'vendor/upload_images.html', context = {'images' : hotel_obj.hotel_images.all()})
+    return render(request, 'vendor/upload_images.html', context = {'images' : hotel_obj.hotel_images.all(), 'vendor': vendor})
 
 @login_required(login_url='login_vendor')
 def delete_image(request, id):
@@ -325,9 +322,9 @@ def edit_hotel(request, slug):
 
     # Retrieve amenities for rendering in the template
     ameneties = Ameneties.objects.all()
-    
+    vendor = request.user.hotelvendor
     # Render the edit_hotel.html template with hotel and amenities as context
-    return render(request, 'vendor/edit_hotel.html', context={'hotel': hotel_obj, 'ameneties': ameneties})
+    return render(request, 'vendor/edit_hotel.html', context={'hotel': hotel_obj, 'ameneties': ameneties, 'vendor': vendor})
 
 @login_required(login_url='login_vendor')
 def bookings(request):
@@ -336,9 +333,61 @@ def bookings(request):
         return HttpResponseForbidden("You are not authorized to view this page.")
     hotels = Hotel.objects.filter(hotel_owner=request.user)
     bookings = HotelBooking.objects.filter(hotel__in=hotels).select_related('hotel', 'booking_user')
-    return render(request, "vendor/bookings.html", {"bookings": bookings})
+    vendor = request.user.hotelvendor
+    return render(request, "vendor/bookings.html", {"bookings": bookings, 'vendor': vendor})
 
 def logout_vendor(request):
     logout(request)
     messages.success(request, "Logout Success")
     return redirect('/accounts/login-vendor/')
+
+@login_required(login_url='login_vendor')
+def vendor_settings(request):
+    # Only allow HotelVendor users
+    if not hasattr(request.user, 'hotelvendor') and not isinstance(request.user, HotelVendor):
+        return HttpResponseForbidden("You are not authorized to view this page.")
+    
+    vendor = request.user.hotelvendor if hasattr(request.user, 'hotelvendor') else request.user
+    
+    if request.method == "POST":
+        # Handle profile update
+        username = request.POST.get('username')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
+        business_name = request.POST.get('business_name')
+        email = request.POST.get('email')
+        phone_number = request.POST.get('phone_number')
+        
+        # Check if username is already taken by another user
+        if username != vendor.username:
+            existing_user = HotelVendor.objects.filter(username=username).exclude(id=vendor.id)
+            if existing_user.exists():
+                messages.error(request, "Username is already taken by another user.")
+                return redirect('vendor_settings')
+        # Check if email is already taken by another user
+        if email != vendor.email:
+            existing_user = HotelVendor.objects.filter(email=email).exclude(id=vendor.id)
+            if existing_user.exists():
+                messages.error(request, "Email is already taken by another user.")
+                return redirect('vendor_settings')
+        # Check if phone number is already taken by another user
+        if phone_number != vendor.phone_number:
+            existing_user = HotelVendor.objects.filter(phone_number=phone_number).exclude(id=vendor.id)
+            if existing_user.exists():
+                messages.error(request, "Phone number is already taken by another user.")
+                return redirect('vendor_settings')
+        # Update user information
+        vendor.username = username
+        vendor.first_name = first_name
+        vendor.last_name = last_name
+        vendor.business_name = business_name
+        vendor.email = email
+        vendor.phone_number = phone_number
+        # Handle profile picture upload
+        if 'profile_picture' in request.FILES:
+            vendor.profile_picture = request.FILES['profile_picture']
+        vendor.save()
+        messages.success(request, "Profile updated successfully!")
+        return redirect('vendor_settings')
+    
+    return render(request, 'vendor/settings.html', {'vendor': vendor})

@@ -34,7 +34,7 @@
           </a>
         </div>
         <div class="nav-item">
-          <a href="{% url 'bookings' %}" class="nav-link">
+          <a href="{% url 'bookings' %}" class="nav-link {% if request.resolver_match.url_name == 'bookings' %}active{% endif %}">
             <i class="fas fa-calendar-alt"></i>
             Bookings
           </a>
@@ -44,9 +44,9 @@
             <i class="fas fa-chart-line"></i>
             Analytics
           </a>
-          </div>
+        </div>
         <div class="nav-item">
-          <a href="#" class="nav-link">
+          <a href="{% url 'vendor_settings' %}" class="nav-link {% if request.resolver_match.url_name == 'vendor_settings' %}active{% endif %}">
             <i class="fas fa-cog"></i>
             Settings
           </a>
@@ -60,14 +60,36 @@
         {% block page_title %}Vendor Dashboard{% endblock %}
       </div>
       <div class="topbar-actions">
-        <a href="#" class="profile-btn">
-          <i class="fas fa-user"></i>
-          Profile
-        </a>
-        <a href="{% url 'logout_vendor' %}" class="profile-btn">
-          <i class="fas fa-sign-out-alt"></i>
-          Logout
-        </a>
+        <div class="topbar-user-menu" onclick="toggleProfileCard(event)">
+          <i class="fas fa-user-circle"></i>
+          <span class="user-menu-text">{{ vendor.first_name }}</span>
+          <i class="fas fa-chevron-down"></i>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Profile Card -->
+    <div class="profile-float-overlay" id="profileFloatOverlay" onclick="closeProfileCard()"></div>
+    <div class="profile-float-card" id="profileFloatCard">
+      <div class="profile-float-avatar">
+        {% if vendor.profile_picture %}
+          <img src="/media/{{ vendor.profile_picture }}" alt="Profile" class="profile-float-img">
+        {% else %}
+          <div class="profile-float-placeholder">
+            <i class="fas fa-user"></i>
+          </div>
+        {% endif %}
+      </div>
+      <div class="profile-float-info">
+        <div class="profile-float-username">@{{ vendor.username }}</div>
+        <div class="profile-float-name">{{ vendor.first_name }} {{ vendor.last_name }}</div>
+        {% if vendor.business_name %}
+          <div class="profile-float-business">{{ vendor.business_name }}</div>
+        {% endif %}
+      </div>
+      <div class="profile-float-actions">
+        <a href="{% url 'vendor_settings' %}" class="profile-float-btn"><i class="fas fa-edit"></i> Edit</a>
+        <a href="{% url 'logout_vendor' %}" class="profile-float-btn logout"><i class="fas fa-sign-out-alt"></i> Logout</a>
       </div>
     </div>
 
@@ -75,10 +97,158 @@
 
     <!-- Main Content -->
     <div class="main-content">
-   {% block start %}
+      {% block start %}
       {% endblock %}
-   </div>
+    </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    
+    <script>
+      function toggleProfileCard(event) {
+        event.stopPropagation();
+        const card = document.getElementById('profileFloatCard');
+        const overlay = document.getElementById('profileFloatOverlay');
+        if (card.classList.contains('active')) {
+          card.classList.remove('active');
+          overlay.classList.remove('active');
+        } else {
+          card.classList.add('active');
+          overlay.classList.add('active');
+        }
+      }
+      function closeProfileCard() {
+        document.getElementById('profileFloatCard').classList.remove('active');
+        document.getElementById('profileFloatOverlay').classList.remove('active');
+      }
+      document.addEventListener('click', function(e) {
+        closeProfileCard();
+      });
+      document.getElementById('profileFloatCard').addEventListener('click', function(e) {
+        e.stopPropagation();
+      });
+    </script>
   </body>
 </html>
+
+<style>
+/* Floating Profile Card Styles */
+.profile-float-overlay {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(30, 32, 40, 0.25);
+  z-index: 2000;
+}
+.profile-float-overlay.active {
+  display: block;
+}
+.profile-float-card {
+  display: none;
+  position: fixed;
+  top: 50px;
+  right: 40px;
+  min-width: 320px;
+  max-width: 90vw;
+  background: rgba(30, 32, 40, 0.75);
+  border-radius: 22px;
+  box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.18);
+  backdrop-filter: blur(16px);
+  border: 1.5px solid rgba(255,255,255,0.12);
+  z-index: 2100;
+  padding: 32px 28px 24px 28px;
+  text-align: center;
+  animation: floatIn 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+.profile-float-card.active {
+  display: block;
+}
+@keyframes floatIn {
+  from { opacity: 0; transform: translateY(-30px) scale(0.98); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+.profile-float-avatar {
+  margin-bottom: 16px;
+}
+.profile-float-img {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(233, 69, 96, 0.3);
+  box-shadow: 0 4px 16px rgba(0,0,0,0.10);
+}
+.profile-float-placeholder {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: rgba(233, 69, 96, 0.2);
+  border: 3px solid rgba(233, 69, 96, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-color);
+  font-size: 2.2rem;
+  margin: 0 auto;
+}
+.profile-float-info {
+  margin-bottom: 18px;
+}
+.profile-float-username {
+  color: #e94560;
+  font-weight: 600;
+  font-size: 1.1rem;
+  margin-bottom: 2px;
+}
+.profile-float-name {
+  color: #fff;
+  font-size: 1.2rem;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+.profile-float-business {
+  color: #b8b8b8;
+  font-size: 1rem;
+  margin-bottom: 0;
+}
+.profile-float-actions {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 18px;
+}
+.profile-float-btn {
+  background: rgba(233, 69, 96, 0.18);
+  border: 1px solid rgba(233, 69, 96, 0.25);
+  color: #e94560;
+  padding: 10px 22px;
+  border-radius: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  font-size: 1rem;
+  transition: all 0.18s;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.profile-float-btn:hover {
+  background: rgba(233, 69, 96, 0.32);
+  color: #fff;
+}
+.profile-float-btn.logout {
+  background: rgba(239, 68, 68, 0.13);
+  border: 1px solid rgba(239, 68, 68, 0.22);
+  color: #ef4444;
+}
+.profile-float-btn.logout:hover {
+  background: rgba(239, 68, 68, 0.22);
+  color: #fff;
+}
+@media (max-width: 600px) {
+  .profile-float-card {
+    right: 10px;
+    left: 10px;
+    min-width: unset;
+    padding: 18px 6vw 18px 6vw;
+  }
+}
+</style>
