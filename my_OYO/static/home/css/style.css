@@ -483,3 +483,18 @@ body{
     padding: 7px 10px;
   }
 }
+
+/* Custom select dropdown for sort options */
+.hotels-searchbar select,
+.search-input select {
+  background: rgba(30,30,30,0.98) !important;
+  color: #fff !important;
+  border: 1.5px solid #444 !important;
+  border-radius: 8px !important;
+  padding: 8px 12px !important;
+}
+.hotels-searchbar select option,
+.search-input select option {
+  background: rgba(30,30,30,0.98);
+  color: #fff;
+}

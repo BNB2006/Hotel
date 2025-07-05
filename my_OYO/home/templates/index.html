@@ -32,8 +32,6 @@
   </div>
 </section>
 
-
-
 <!-- Featured Hotels Section -->
 <section class="py-5">
   <div class="container">
@@ -43,7 +41,6 @@
         <p class="hero-description">Discover our handpicked collection of luxury accommodations</p>
       </div>
     </div>
-    
     <div class="row">
       {% for hotel in hotels %}
         <div class="col-lg-3 col-md-6 mb-4 fade-in-up" style="animation-delay: {{ forloop.counter|add:"0.1" }}s;">
@@ -54,18 +51,22 @@
               {% else %}
                 <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="card-img-top" alt="Luxury Hotel">
               {% endif %}
-              <div class="hotel-card-body">
-                <h5 class="hotel-title">{{hotel.hotel_name}}</h5>
-                <p class="hotel-location">
+              <div class="hotel-card-body" style="padding: 1rem 0.7rem 0.7rem 0.7rem;">
+                <h5 class="hotel-title" style="color: #fff; font-weight: 800; text-shadow: 0 2px 8px rgba(0,0,0,0.12); margin-bottom: 0.4rem;">{{hotel.hotel_name}}</h5>
+                <p class="hotel-location" style="color: #b0b0b0; font-size: 0.97rem; margin-bottom: 0.5rem;">
                   <i class="fas fa-map-marker-alt me-2"></i>{{hotel.hotel_location}}
                 </p>
-                <div class="mb-3">
-                  <span class="price-badge">₹{{hotel.hotel_price}}</span>
+                <div class="mb-2 d-flex align-items-end gap-2">
                   {% if hotel.hotel_offer_price %}
-                    <span class="offer-badge">₹{{hotel.hotel_offer_price}}</span>
+                    <span style="color: #27ae60; font-weight: 700; font-size: 1.05rem;">₹{{hotel.hotel_offer_price}}</span>
+                    <span style="color: #e57373; text-decoration: line-through; font-size: 1rem; font-weight: 500; margin-left: 8px;">₹{{hotel.hotel_price}}</span>
+                    <span style="color: #b0b0b0; font-size: 0.95rem; margin-left: 4px;">/night</span>
+                  {% else %}
+                    <span style="color: #fff; font-weight: 700; font-size: 1.1rem;">₹{{hotel.hotel_price}}</span>
+                    <span style="color: #b0b0b0; font-size: 0.95rem; margin-left: 4px;">/night</span>
                   {% endif %}
                 </div>
-                <div class="mb-3">
+                <div class="mb-2">
                   <span class="amenity-badge">
                     <i class="fas fa-swimming-pool me-1"></i>Pool
                   </span>
@@ -76,18 +77,12 @@
                     <i class="fas fa-wifi me-1"></i>WiFi
                   </span>
                 </div>
-                <div class="text-center">
-                  <span class="btn-primary-custom btn-sm">
-                    <i class="fas fa-eye me-2"></i>View Details
-                  </span>
-                </div>
               </div>
             </a>
           </div>
         </div>
       {% endfor %}
     </div>
-    
     <!-- View All Hotels Button -->
     <div class="row mt-5">
       <div class="col-12 text-center fade-in-up">
@@ -109,7 +104,6 @@
         <p class="hero-description">Experience the difference with our premium services</p>
       </div>
     </div>
-    
     <div class="row">
       <div class="col-lg-4 col-md-6 mb-4 fade-in-up" style="animation-delay: 0.1s;">
         <div class="glass-card text-center h-100">
@@ -118,7 +112,6 @@
           <p class="text-muted">Your data and payments are protected with bank-level security</p>
         </div>
       </div>
-      
       <div class="col-lg-4 col-md-6 mb-4 fade-in-up" style="animation-delay: 0.2s;">
         <div class="glass-card text-center h-100">
           <i class="fas fa-star" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1.5rem;"></i>
@@ -126,7 +119,6 @@
           <p class="text-muted">Handpicked luxury hotels that meet our high standards</p>
         </div>
       </div>
-      
       <div class="col-lg-4 col-md-6 mb-4 fade-in-up" style="animation-delay: 0.3s;">
         <div class="glass-card text-center h-100">
           <i class="fas fa-headset" style="font-size: 3rem; color: var(--primary-color); margin-bottom: 1.5rem;"></i>
@@ -155,7 +147,6 @@
     </div>
   </div>
 </section>
-
 
 {% endblock %}
 
