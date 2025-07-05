@@ -61,7 +61,7 @@ def hotel_details(request, slug):
             booking_end_date =end_date,
             price = hotel.hotel_offer_price * days_count
         )
-        messages.warning(request, "Booking Captured.")
+        messages.success(request, "Booking Captured.")
 
         return HttpResponseRedirect(request.path_info)
 

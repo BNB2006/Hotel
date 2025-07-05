@@ -89,15 +89,31 @@
 </div>
 
 <script>
-  // Auto-hide toasts after 3 seconds with slide-out animation
+  // Auto-hide toasts with staggered appearance and exit
   document.addEventListener('DOMContentLoaded', function() {
-    document.querySelectorAll('.toast-message').forEach(function(el) {
+    const toastMessages = document.querySelectorAll('.toast-message');
+    
+    toastMessages.forEach(function(el, index) {
+      // Add delay for each toast based on its index (1 second delay between each)
+      const entranceDelay = index * 1000; // 1000ms = 1 second
+      
+      // Initially hide all toasts
+      el.style.transform = 'translateX(120%)';
+      el.style.opacity = '0';
+      el.style.animation = 'none';
+      
+      // Show toast with delay
+      setTimeout(function() {
+        el.style.animation = 'slideInRight 0.6s cubic-bezier(0.23, 1, 0.32, 1) forwards';
+      }, entranceDelay);
+      
+      // Auto-hide toast after 3 seconds from when it appears
       setTimeout(function() {
         el.style.animation = 'slideOutRight 0.5s forwards';
         setTimeout(function() {
           el.style.display = 'none';
         }, 500); // Match the duration of slideOutRight
-      }, 3000);
+      }, entranceDelay + 3000); // 3 seconds after the toast appears
     });
   });
 </script>

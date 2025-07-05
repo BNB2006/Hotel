@@ -269,13 +269,14 @@ def delete_hotel(request, slug):
 @login_required(login_url='login_vendor')
 def upload_images(request, slug):
     hotel_obj = Hotel.objects.get(hotel_slug = slug)
+
     if request.method == "POST":
         image = request.FILES['image']
-        print(image)
         HotelImages.objects.create(
         hotel = hotel_obj,
         image = image
         )
+        messages.success(request, "image uploaded succesfully")
         return HttpResponseRedirect(request.path_info)
 
     return render(request, 'vendor/upload_images.html', context = {'images' : hotel_obj.hotel_images.all()})
@@ -284,7 +285,7 @@ def upload_images(request, slug):
 def delete_image(request, id):
     hotel_image = HotelImages.objects.get(id = id)
     hotel_image.delete()
-    messages.success(request, "Hotel Image deleted")
+    messages.warning(request, "Hotel Image deleted")
     return redirect('/accounts/dashboard/')
 
 
