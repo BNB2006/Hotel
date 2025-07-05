@@ -14,32 +14,48 @@ def index(request):
     if request.user.is_authenticated and hasattr(request.user, 'hotelvendor'):
         messages.error(request,"Please login as user!")
         logout(request)
-        return redirect('/')  # or your user login URL name
+        return redirect('/')
+    
     print('user:',request.user)
-    hotels = Hotel.objects.all()
-    if request.GET.get('search'):
-        hotels = hotels.filter(hotel_name_icontains = request.GET.get('search'))
+    # Show only 4 featured hotels on landing page
+    hotels = Hotel.objects.all()[:4]
+    messages.success(request,"Welcome")
+    return render(request, 'index.html', context={'hotels': hotels})
 
-    if request.GET.get('sort_by'):
-        sort_by = request.GET.get('sort_by')
-        if sort_by == "sort_low":
-            hotels = hotels.order_by('hotel_offer_price')
-        elif sort_by == "sort_high":
-            hotels = hotels.order_by('-hotel_offer_price')
+
+def hotels(request):
+    # If vendor, log out and redirect to login page
+    if request.user.is_authenticated and hasattr(request.user, 'hotelvendor'):
+        messages.error(request,"Please login as user!")
+        logout(request)
+        return redirect('/')
+    
+    hotels = Hotel.objects.all()
+    
+    # Get search and sort parameters
+    search_query = request.GET.get('search', '')
+    sort_by = request.GET.get('sort_by', '')
+    
+    # Apply search filter
+    if search_query:
+        hotels = hotels.filter(hotel_name__icontains=search_query)
+
+    # Apply sorting
+    if sort_by == "sort_low":
+        hotels = hotels.order_by('hotel_offer_price')
+    elif sort_by == "sort_high":
+        hotels = hotels.order_by('-hotel_offer_price')
         
 
-    messages.success(request,"Welocme")
-    return render(request, 'index.html', context={'hotels':hotels[:50]})
-
-
-
-def hotel_details(request, slug):
-    hotel = Hotel.objects.get(hotel_slug = slug)
-    return render(request, 'hotel_detail.html', context = {'hotel' : hotel})
+    return render(request, 'hotels.html', context={
+        'hotels': hotels,
+        'search_query': search_query,
+        'sort_by': sort_by
+    })
 
 
 def hotel_details(request, slug):
-    hotel = Hotel.objects.get(hotel_slug = slug)
+    hotel = Hotel.objects.get(hotel_slug=slug)
 
     if request.method == "POST":
         start_date = request.POST.get('start_date')
@@ -50,20 +66,16 @@ def hotel_details(request, slug):
 
         if days_count <= 0:
             messages.warning(request, "Invalid Booking Date.")
-
             return HttpResponseRedirect(request.path_info)
 
-
         HotelBooking.objects.create(
-            hotel = hotel,
-            booking_user = HotelUser.objects.get(id = request.user.id),
-            booking_start_date = start_date,
-            booking_end_date =end_date,
-            price = hotel.hotel_offer_price * days_count
+            hotel=hotel,
+            booking_user=HotelUser.objects.get(id=request.user.id),
+            booking_start_date=start_date,
+            booking_end_date=end_date,
+            price=hotel.hotel_offer_price * days_count
         )
         messages.success(request, "Booking Captured.")
-
         return HttpResponseRedirect(request.path_info)
 
-
-    return render(request, 'hotel_detail.html', context = {'hotel' : hotel})
+    return render(request, 'hotel_detail.html', context={'hotel': hotel})

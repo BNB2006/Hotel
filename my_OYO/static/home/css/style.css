@@ -175,22 +175,16 @@ body{
 
 
 /* search section */
-.search-section{
-  background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid var(--glass-border);
-  border-radius: 20px;
-  padding: 2rem;
-  margin: 2rem 0;
+.search-section {
+  padding: 1rem 1.5rem !important;
+  margin: 1rem 0 !important;
+  border-radius: 14px !important;
 }
 
-.search-input{
-  background: rgba(255, 255, 255, 0.1);
-  border: 1px solid var(--glass-border);
-  border-radius: 15px;
-  color: var(--text-primary);
-  padding: 15px 20px;
-  font-size: 1rem;
+.search-input {
+  padding: 10px 16px !important;
+  font-size: 1rem !important;
+  border-radius: 10px !important;
 }
 
 .search-input::placeholder{
@@ -344,6 +338,13 @@ body{
   .glass-card {
     padding: 1.5rem;
   }
+  .search-section {
+    padding: 0.5rem 0.5rem !important;
+  }
+  .search-input {
+    padding: 8px 10px !important;
+    font-size: 0.95rem !important;
+  }
 }
 
 /* Animations */
@@ -438,4 +439,47 @@ body{
 .auth-link:hover {
   color: #fff;
   text-decoration: underline;
+}
+
+/* Hotels Top Bar Styles */
+.hotels-topbar-section {
+  background: var(--gradient-dark);
+  border-bottom: 1px solid var(--glass-border);
+  margin-bottom: 0.5rem;
+}
+.hotels-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.5px;
+}
+.hotels-searchbar input,
+.hotels-searchbar select {
+  min-width: 90px;
+  max-width: 220px;
+  font-size: 1rem;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+.hotels-searchbar button {
+  padding: 8px 18px;
+  font-size: 1rem;
+  border-radius: 8px;
+}
+@media (max-width: 768px) {
+  .hotels-topbar-section {
+    padding: 0.7rem 0.2rem;
+  }
+  .hotels-title {
+    font-size: 1.3rem;
+  }
+  .hotels-searchbar input,
+  .hotels-searchbar select {
+    font-size: 0.95rem;
+    padding: 7px 8px;
+  }
+  .hotels-searchbar button {
+    font-size: 0.95rem;
+    padding: 7px 10px;
+  }
 }

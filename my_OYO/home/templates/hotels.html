@@ -1,0 +1,109 @@
+{% extends "utils/base.html" %}
+{% block start %}
+
+<!-- Hotels Top Bar: Title (left) and Search/Sort (right) -->
+<section class="hotels-topbar-section py-3">
+  <div class="container">
+    <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
+      <div class="hotels-title mb-2 mb-md-0" style="font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: 0.5px;">All Hotels</div>
+      <form method="GET" action="{% url 'hotels' %}" id="searchForm" class="d-flex flex-wrap gap-2 align-items-center justify-content-end hotels-searchbar">
+        <input type="text" name="search" class="form-control search-input" placeholder="Search hotels..." value="{{ search_query }}" style="max-width: 220px; min-width: 120px;">
+        <select class="form-control search-input" name="sort_by" id="sortSelect" style="max-width: 140px; min-width: 90px;">
+          <option value="">Sort by</option>
+          <option value="sort_low" {% if sort_by == 'sort_low' %}selected{% endif %}>Price: Low to High</option>
+          <option value="sort_high" {% if sort_by == 'sort_high' %}selected{% endif %}>Price: High to Low</option>
+          <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Rating</option>
+          <option value="distance" {% if sort_by == 'distance' %}selected{% endif %}>Distance</option>
+        </select>
+        <button type="submit" class="btn-primary-custom" style="padding: 8px 18px; font-size: 1rem; border-radius: 8px;">Search</button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- Results Info -->
+<section class="py-2">
+  <div class="container">
+    <div class="row">
+      <div class="col-12">
+        <p class="text-muted mb-0" style="font-size: 0.95rem;">
+          {% if search_query or sort_by %}
+            Showing {{ hotels|length }} hotel{% if hotels|length != 1 %}s{% endif %}
+            {% if search_query %} for "{{ search_query }}"{% endif %}
+            {% if sort_by %} (sorted by {{ sort_by|title }}){% endif %}
+          {% else %}
+            Showing all {{ hotels|length }} hotels
+          {% endif %}
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- All Hotels Section -->
+<section class="py-4">
+  <div class="container">
+    <div class="row">
+      {% for hotel in hotels %}
+        <div class="col-lg-3 col-md-6 mb-4 fade-in-up" style="animation-delay: {{ forloop.counter|add:"0.1" }}s;">
+          <div class="hotel-card">
+            <a href="{% url 'hotel_details' hotel.hotel_slug %}" style="text-decoration: none; color: inherit;">
+              {% if hotel.hotel_images.first %}
+                <img src="/media/{{hotel.hotel_images.first.image}}" class="card-img-top" alt="{{hotel.hotel_name}}">
+              {% else %}
+                <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="card-img-top" alt="Luxury Hotel">
+              {% endif %}
+              <div class="hotel-card-body">
+                <h5 class="hotel-title">{{hotel.hotel_name}}</h5>
+                <p class="hotel-location">
+                  <i class="fas fa-map-marker-alt me-2"></i>{{hotel.hotel_location}}
+                </p>
+                <div class="mb-3">
+                  <span class="price-badge">₹{{hotel.hotel_price}}</span>
+                  {% if hotel.hotel_offer_price %}
+                    <span class="offer-badge">₹{{hotel.hotel_offer_price}}</span>
+                  {% endif %}
+                </div>
+                <div class="mb-3">
+                  <span class="amenity-badge">
+                    <i class="fas fa-swimming-pool me-1"></i>Pool
+                  </span>
+                  <span class="amenity-badge">
+                    <i class="fas fa-snowflake me-1"></i>AC
+                  </span>
+                  <span class="amenity-badge">
+                    <i class="fas fa-wifi me-1"></i>WiFi
+                  </span>
+                </div>
+                <div class="text-center">
+                  <span class="btn-primary-custom btn-sm">
+                    <i class="fas fa-eye me-2"></i>View Details
+                  </span>
+                </div>
+              </div>
+            </a>
+          </div>
+        </div>
+      {% empty %}
+        <div class="col-12 text-center py-5">
+          <div class="glass-card">
+            <i class="fas fa-search" style="font-size: 4rem; color: var(--primary-color); margin-bottom: 2rem;"></i>
+            <h3 class="mb-3">No Hotels Found</h3>
+            <p class="text-muted mb-4">
+              {% if search_query %}
+                No hotels found matching "{{ search_query }}". Try a different search term.
+              {% else %}
+                No hotels available at the moment. Please check back later.
+              {% endif %}
+            </p>
+            <a href="{% url 'hotels' %}" class="btn-primary-custom">
+              <i class="fas fa-arrow-left me-2"></i>View All Hotels
+            </a>
+          </div>
+        </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+{% endblock %} 

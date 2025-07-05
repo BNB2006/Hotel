@@ -13,7 +13,7 @@
           Book your dream stay with our curated collection of premium hotels worldwide.
         </p>
         <div class="d-flex gap-3">
-          <a href="#search-section" class="btn-primary-custom">
+          <a href="{% url 'hotels' %}" class="btn-primary-custom">
             <i class="fas fa-search me-2"></i>Find Hotels
           </a>
           <a href="{% url 'register' %}" class="btn-secondary-custom">
@@ -32,32 +32,7 @@
   </div>
 </section>
 
-<!-- Search Section -->
-<section id="search-section" class="py-5">
-  <div class="container">
-    <div class="search-section fade-in-up">
-      <div class="row">
-        <div class="col-md-8">
-          <input type="text" name="search" class="form-control search-input" placeholder="Search for hotels, cities, or destinations...">
-        </div>
-        <div class="col-md-2">
-          <select class="form-control search-input" name="sort_by">
-            <option value="">Sort by</option>
-            <option value="sort_low">Price: Low to High</option>
-            <option value="sort_high">Price: High to Low</option>
-            <option value="rating">Rating</option>
-            <option value="distance">Distance</option>
-          </select>
-        </div>
-        <div class="col-md-2">
-          <button type="submit" class="btn-primary-custom w-100">
-            <i class="fas fa-search me-2"></i>Search
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+
 
 <!-- Featured Hotels Section -->
 <section class="py-5">
@@ -111,6 +86,16 @@
           </div>
         </div>
       {% endfor %}
+    </div>
+    
+    <!-- View All Hotels Button -->
+    <div class="row mt-5">
+      <div class="col-12 text-center fade-in-up">
+        <a href="{% url 'hotels' %}" class="btn-primary-custom btn-lg">
+          <i class="fas fa-hotel me-2"></i>View All Hotels
+        </a>
+        <p class="text-muted mt-3">Explore our complete collection with search and filtering options</p>
+      </div>
     </div>
   </div>
 </section>
