@@ -18,20 +18,16 @@
       </ul>
       <ul class="myoyo-navbar-profile">
         {% if user.is_authenticated %}
-        <li class="myoyo-profile-dropdown">
-          <a href="#" class="myoyo-profile-toggle">
-            {% if user.profile_picture %}
-              <img src="/media/{{ user.profile_picture }}" alt="Profile" class="myoyo-profile-avatar">
+        <li>
+          <a href="#" class="myoyo-profile-toggle" id="profileSidebarToggle">
+            {% if user.profile_picture and user.profile_picture.url %}
+              <img src="{{ user.profile_picture.url }}" alt="Profile" class="myoyo-profile-avatar">
             {% else %}
               <span class="myoyo-profile-placeholder"><i class="fas fa-user"></i></span>
             {% endif %}
             <span>{{ user.first_name|default:user.username }}</span>
             <i class="fas fa-caret-down"></i>
           </a>
-          <ul class="myoyo-dropdown-menu">
-            <li><a href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Profile</a></li>
-            <li><a href="{% url 'logout_user' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-          </ul>
         </li>
         {% else %}
         <li><a href="{% url 'login_page' %}" class="myoyo-navbar-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
@@ -41,6 +37,155 @@
   </div>
 </nav>
 
+<!-- Profile Sidebar Drawer -->
+<div class="profile-sidebar-overlay" id="profileSidebarOverlay"></div>
+<aside class="profile-sidebar" id="profileSidebar">
+  <button class="profile-sidebar-close" id="profileSidebarClose" aria-label="Close sidebar">&times;</button>
+  <div class="profile-sidebar-header">
+    {% if user.profile_picture and user.profile_picture.url %}
+      <img src="{{ user.profile_picture.url }}" alt="Profile" class="profile-sidebar-avatar">
+    {% else %}
+      <span class="profile-sidebar-placeholder"><i class="fas fa-user"></i></span>
+    {% endif %}
+    <div class="profile-sidebar-info">
+      <div class="profile-sidebar-name">{{ user.first_name|default:user.username }}</div>
+      <div class="profile-sidebar-email">{{ user.email }}</div>
+    </div>
+  </div>
+  <ul class="profile-sidebar-menu">
+    <li><a href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Your profile</a></li>
+    <li><a href="{% url 'logout_user' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+  </ul>
+</aside>
+
+<style>
+.profile-sidebar-overlay {
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.35);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s;
+}
+.profile-sidebar-overlay.active {
+  opacity: 1;
+  pointer-events: auto;
+}
+.profile-sidebar {
+  position: fixed;
+  top: 0; right: 0;
+  width: 340px;
+  max-width: 90vw;
+  height: 100vh;
+  background: linear-gradient(135deg, #232526 0%, #414345 100%);
+  color: #fff;
+  box-shadow: -4px 0 32px rgba(0,0,0,0.18);
+  z-index: 1000;
+  transform: translateX(100%);
+  transition: transform 0.35s cubic-bezier(.77,0,.18,1);
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+}
+.profile-sidebar.active {
+  transform: translateX(0);
+}
+.profile-sidebar-close {
+  background: none;
+  border: none;
+  color: #fff;
+  font-size: 2.2rem;
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  cursor: pointer;
+  z-index: 2;
+  transition: color 0.2s;
+}
+.profile-sidebar-close:hover {
+  color: #ff6b35;
+}
+.profile-sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  padding: 40px 32px 24px 32px;
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+}
+.profile-sidebar-avatar {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid #ff6b35;
+  background: #222;
+}
+.profile-sidebar-placeholder {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background: rgba(255, 107, 53, 0.13);
+  color: #ff6b35;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2.2rem;
+  border: 3px solid #ff6b35;
+}
+.profile-sidebar-info {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.profile-sidebar-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+.profile-sidebar-email {
+  font-size: 0.98rem;
+  color: #ffbfa3;
+  word-break: break-all;
+}
+.profile-sidebar-menu {
+  list-style: none;
+  margin: 0;
+  padding: 32px 0 0 0;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.profile-sidebar-menu li a {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: #fff;
+  text-decoration: none;
+  font-size: 1.08rem;
+  padding: 16px 32px;
+  border-radius: 0 24px 24px 0;
+  transition: background 0.2s, color 0.2s, padding 0.2s;
+}
+.profile-sidebar-menu li a:hover {
+  background: rgba(255, 107, 53, 0.13);
+  color: #ff6b35;
+  padding-left: 40px;
+}
+@media (max-width: 500px) {
+  .profile-sidebar {
+    width: 98vw;
+    min-width: 0;
+    padding: 0;
+  }
+  .profile-sidebar-header {
+    padding: 32px 16px 18px 16px;
+  }
+  .profile-sidebar-menu li a {
+    padding: 14px 16px;
+  }
+}
+</style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
@@ -52,17 +197,24 @@ document.addEventListener('DOMContentLoaded', function() {
     toggle.classList.toggle('active');
   });
 
-  // Profile dropdown
-  const profileToggle = document.querySelector('.myoyo-profile-toggle');
-  if (profileToggle) {
-    profileToggle.addEventListener('click', function(e) {
+  // Profile sidebar drawer
+  const sidebarToggle = document.getElementById('profileSidebarToggle');
+  const sidebar = document.getElementById('profileSidebar');
+  const sidebarOverlay = document.getElementById('profileSidebarOverlay');
+  const sidebarClose = document.getElementById('profileSidebarClose');
+  if (sidebarToggle && sidebar && sidebarOverlay && sidebarClose) {
+    sidebarToggle.addEventListener('click', function(e) {
       e.preventDefault();
-      this.parentElement.classList.toggle('open');
+      sidebar.classList.add('active');
+      sidebarOverlay.classList.add('active');
     });
-    document.addEventListener('click', function(e) {
-      if (!profileToggle.contains(e.target)) {
-        profileToggle.parentElement.classList.remove('open');
-      }
+    sidebarClose.addEventListener('click', function() {
+      sidebar.classList.remove('active');
+      sidebarOverlay.classList.remove('active');
+    });
+    sidebarOverlay.addEventListener('click', function() {
+      sidebar.classList.remove('active');
+      sidebarOverlay.classList.remove('active');
     });
   }
 });
