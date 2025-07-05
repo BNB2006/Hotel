@@ -21,4 +21,8 @@ urlpatterns = [
 
     path('verify-user/<token>/', views.verify_email_token, name="verify_email_token"),
     path('verify-vendor/<token>/', views.verify_email_token_vendor, name="verify_email_token_vendor"),
+    
+    # User profile and logout
+    path('user-profile/', views.user_profile, name="user_profile"),
+    path('logout-user/', views.logout_user, name="logout_user"),
 ]

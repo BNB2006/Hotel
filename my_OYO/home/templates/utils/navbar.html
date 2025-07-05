@@ -1,38 +1,70 @@
 {% load static %}
-<!--navbar-->
-<nav class="navbar navbar-expand-lg navbar-dark shadow-lg">
-  <div class="container">
-    <a class="navbar-brand" href="/">
-      <i class="fas fa-hotel me-2"></i>myOYO
+<nav class="myoyo-navbar">
+  <div class="myoyo-navbar-container">
+    <!-- Logo -->
+    <a href="/" class="myoyo-navbar-logo">
+      <i class="fas fa-hotel"></i>
+      <span>myOYO</span>
     </a>
-  
-    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon"></span>
+    <!-- Hamburger for mobile -->
+    <button class="myoyo-navbar-toggle" id="myoyo-navbar-toggle" aria-label="Toggle navigation">
+      <span></span><span></span><span></span>
     </button>
-    
-    <div class="collapse navbar-collapse" id="navbarNav">
-      <ul class="navbar-nav ms-auto">
-        <li class="nav-item">
-          <a class="nav-link" aria-current="page" href="/">
-            <i class="fas fa-home me-1"></i>Home
+    <!-- Nav Links -->
+    <div class="myoyo-navbar-links" id="myoyo-navbar-links">
+      <ul class="myoyo-navbar-menu">
+        <li><a href="/" class="myoyo-navbar-link"><i class="fas fa-home"></i> Home</a></li>
+        <li><a href="{% url 'hotels' %}" class="myoyo-navbar-link"><i class="fas fa-hotel"></i> Hotels</a></li>
+      </ul>
+      <ul class="myoyo-navbar-profile">
+        {% if user.is_authenticated %}
+        <li class="myoyo-profile-dropdown">
+          <a href="#" class="myoyo-profile-toggle">
+            {% if user.profile_picture %}
+              <img src="/media/{{ user.profile_picture }}" alt="Profile" class="myoyo-profile-avatar">
+            {% else %}
+              <span class="myoyo-profile-placeholder"><i class="fas fa-user"></i></span>
+            {% endif %}
+            <span>{{ user.first_name|default:user.username }}</span>
+            <i class="fas fa-caret-down"></i>
           </a>
+          <ul class="myoyo-dropdown-menu">
+            <li><a href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Profile</a></li>
+            <li><a href="{% url 'logout_user' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
+          </ul>
         </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'hotels' %}">
-            <i class="fas fa-hotel me-1"></i>Hotels
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link" href="{% url 'login_page'%}">
-            <i class="fas fa-sign-in-alt me-1"></i>Login
-          </a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link btn-primary-custom btn-sm" href="{% url 'register'%}">
-            <i class="fas fa-user-plus me-1"></i>Register
-          </a>
-        </li>
+        {% else %}
+        <li><a href="{% url 'login_page' %}" class="myoyo-navbar-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+        {% endif %}
       </ul>
     </div>
   </div>
 </nav>
+
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  // Hamburger menu toggle
+  const toggle = document.getElementById('myoyo-navbar-toggle');
+  const links = document.getElementById('myoyo-navbar-links');
+  toggle.addEventListener('click', function() {
+    links.classList.toggle('active');
+    toggle.classList.toggle('active');
+  });
+
+  // Profile dropdown
+  const profileToggle = document.querySelector('.myoyo-profile-toggle');
+  if (profileToggle) {
+    profileToggle.addEventListener('click', function(e) {
+      e.preventDefault();
+      this.parentElement.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e) {
+      if (!profileToggle.contains(e.target)) {
+        profileToggle.parentElement.classList.remove('open');
+      }
+    });
+  }
+});
+</script>
+
