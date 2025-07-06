@@ -79,7 +79,7 @@
           {% else %}
             <!-- If user is HotelVendor, show login link (they should use vendor login) -->
         <li class="nav-item">
-              <a class="nav-link login-btn" href="{% url 'login_page'%}">
+              <a class="nav-link login-btn btn-outline-primary" href="{% url 'login_page'%}">
                 <i class="fas fa-sign-in-alt"></i>Login
           </a>
         </li>
@@ -87,7 +87,7 @@
         {% else %}
           <!-- User not logged in -->
         <li class="nav-item">
-            <a class="nav-link login-btn" href="{% url 'login_page'%}">
+            <a class="nav-link login-btn btn-outline-primary" href="{% url 'login_page'%}">
               <i class="fas fa-sign-in-alt"></i>Login
           </a>
         </li>

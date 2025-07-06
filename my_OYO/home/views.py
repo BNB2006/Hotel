@@ -19,7 +19,6 @@ def index(request):
     print('user:',request.user)
     # Show only 4 featured hotels on landing page
     hotels = Hotel.objects.all()[:4]
-    messages.success(request,"Welcome")
     return render(request, 'index.html', context={'hotels': hotels})
 
 
