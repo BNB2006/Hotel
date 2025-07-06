@@ -110,10 +110,10 @@
       // Auto-hide toast after 3 seconds from when it appears
       setTimeout(function() {
         el.style.animation = 'slideOutRight 0.5s forwards';
-        setTimeout(function() {
-          el.style.display = 'none';
+    setTimeout(function() {
+        el.style.display = 'none';
         }, 500); // Match the duration of slideOutRight
       }, entranceDelay + 3000); // 3 seconds after the toast appears
-    });
+      });
   });
 </script>

@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseForbidden
 
 # Create your views here.
-def login_page(request):    
+def login_page(request): 
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -391,43 +391,6 @@ def vendor_settings(request):
         return redirect('vendor_settings')
     
     return render(request, 'vendor/settings.html', {'vendor': vendor})
-
-@login_required(login_url='login_page')
-def user_profile(request):
-    user = request.user  # This is the currently logged-in user
-    if request.method == "POST":
-        username = request.POST.get('username')
-        first_name = request.POST.get('first_name')
-        last_name = request.POST.get('last_name')
-        email = request.POST.get('email')
-        phone_number = request.POST.get('phone_number')
-        # Check if username is already taken by another user
-        if username != user.username:
-            existing_user = HotelUser.objects.filter(username=username).exclude(id=user.id)
-            if existing_user.exists():
-                messages.error(request, "Username is already taken by another user.")
-                return redirect('user_profile')
-        if email != user.email:
-            existing_user = HotelUser.objects.filter(email=email).exclude(id=user.id)
-            if existing_user.exists():
-                messages.error(request, "Email is already taken by another user.")
-                return redirect('user_profile')
-        if phone_number != user.phone_number:
-            existing_user = HotelUser.objects.filter(phone_number=phone_number).exclude(id=user.id)
-            if existing_user.exists():
-                messages.error(request, "Phone number is already taken by another user.")
-                return redirect('user_profile')
-        user.username = username
-        user.first_name = first_name
-        user.last_name = last_name
-        user.email = email
-        user.phone_number = phone_number
-        if 'profile_picture' in request.FILES:
-            user.profile_picture = request.FILES['profile_picture']
-        user.save()
-        messages.success(request, "Profile updated successfully!")
-        return redirect('user_profile')
-    return render(request, 'user_profile.html', {'user': user})
 
 def logout_user(request):
     logout(request)

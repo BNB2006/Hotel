@@ -6,6 +6,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('ajax-send-otp/', views.ajax_send_otp, name='ajax_send_otp'),
     path('verify-otp/', views.verify_otp, name='verify_otp'),  # Changed to not require email in URL
+    path('logout/', views.logout_user, name='logout'),
 
     path('login-vendor/', views.login_vendor, name='login_vendor'),
     path('register-vendor/', views.register_vendor, name='register_vendor'),
@@ -21,8 +22,4 @@ urlpatterns = [
 
     path('verify-user/<token>/', views.verify_email_token, name="verify_email_token"),
     path('verify-vendor/<token>/', views.verify_email_token_vendor, name="verify_email_token_vendor"),
-    
-    # User profile and logout
-    path('user-profile/', views.user_profile, name="user_profile"),
-    path('logout-user/', views.logout_user, name="logout_user"),
 ]

@@ -1,222 +1,376 @@
 {% load static %}
-<nav class="myoyo-navbar">
-  <div class="myoyo-navbar-container">
-    <!-- Logo -->
-    <a href="/" class="myoyo-navbar-logo">
-      <i class="fas fa-hotel"></i>
-      <span>myOYO</span>
+<!-- Custom Navbar -->
+<nav class="custom-navbar">
+  <div class="nav-container">
+    <a class="nav-brand" href="/">
+      <i class="fas fa-hotel"></i>myOYO
     </a>
-    <!-- Hamburger for mobile -->
-    <button class="myoyo-navbar-toggle" id="myoyo-navbar-toggle" aria-label="Toggle navigation">
-      <span></span><span></span><span></span>
+  
+    <button class="nav-toggle" type="button" aria-label="Toggle navigation">
+      <span class="nav-toggle-icon"></span>
     </button>
-    <!-- Nav Links -->
-    <div class="myoyo-navbar-links" id="myoyo-navbar-links">
-      <ul class="myoyo-navbar-menu">
-        <li><a href="/" class="myoyo-navbar-link"><i class="fas fa-home"></i> Home</a></li>
-        <li><a href="{% url 'hotels' %}" class="myoyo-navbar-link"><i class="fas fa-hotel"></i> Hotels</a></li>
-      </ul>
-      <ul class="myoyo-navbar-profile">
-        {% if user.is_authenticated %}
-        <li>
-          <a href="#" class="myoyo-profile-toggle" id="profileSidebarToggle">
-            {% if user.profile_picture and user.profile_picture.url %}
-              <img src="{{ user.profile_picture.url }}" alt="Profile" class="myoyo-profile-avatar">
-            {% else %}
-              <span class="myoyo-profile-placeholder"><i class="fas fa-user"></i></span>
-            {% endif %}
-            <span>{{ user.first_name|default:user.username }}</span>
-            <i class="fas fa-caret-down"></i>
+    
+    <div class="nav-menu" id="navMenu">
+      <ul class="nav-list">
+        <li class="nav-item">
+          <a class="nav-link" href="/">
+            <i class="fas fa-home"></i>Home
           </a>
         </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'hotels' %}">
+            <i class="fas fa-hotel"></i>Hotels
+          </a>
+        </li>
+        
+        <!-- Dynamic User Section -->
+        {% if user.is_authenticated %}
+          <!-- Check if user is HotelUser (not HotelVendor) -->
+          {% if user.hoteluser %}
+            <li class="nav-item">
+              <div class="user-profile-dropdown">
+                <div class="user-profile-trigger">
+                  {% if user.hoteluser.profile_picture %}
+                    <img src="/media/{{ user.hoteluser.profile_picture }}" alt="Profile" class="user-profile-pic">
+                  {% else %}
+                    <div class="user-profile-placeholder">
+                      <i class="fas fa-user"></i>
+                    </div>
+                  {% endif %}
+                  <span class="user-name">{{ user.first_name }}</span>
+                  <i class="fas fa-chevron-down"></i>
+                </div>
+                <div class="user-dropdown-menu">
+                  <a href="#" class="dropdown-item">
+                    <i class="fas fa-user"></i>My Profile
+                  </a>
+                  <a href="#" class="dropdown-item">
+                    <i class="fas fa-calendar"></i>My Bookings
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="{% url 'logout' %}" class="dropdown-item">
+                    <i class="fas fa-sign-out-alt"></i>Logout
+                  </a>
+                </div>
+              </div>
+            </li>
+          {% else %}
+            <!-- If user is HotelVendor, show login link (they should use vendor login) -->
+            <li class="nav-item">
+              <a class="nav-link login-btn" href="{% url 'login_page'%}">
+                <i class="fas fa-sign-in-alt"></i>Login
+              </a>
+            </li>
+          {% endif %}
         {% else %}
-        <li><a href="{% url 'login_page' %}" class="myoyo-navbar-link"><i class="fas fa-sign-in-alt"></i> Login</a></li>
+          <!-- User not logged in -->
+          <li class="nav-item">
+            <a class="nav-link login-btn" href="{% url 'login_page'%}">
+              <i class="fas fa-sign-in-alt"></i>Login
+            </a>
+          </li>
         {% endif %}
       </ul>
     </div>
   </div>
 </nav>
 
-<!-- Profile Sidebar Drawer -->
-<div class="profile-sidebar-overlay" id="profileSidebarOverlay"></div>
-<aside class="profile-sidebar" id="profileSidebar">
-  <button class="profile-sidebar-close" id="profileSidebarClose" aria-label="Close sidebar">&times;</button>
-  <div class="profile-sidebar-header">
-    {% if user.profile_picture and user.profile_picture.url %}
-      <img src="{{ user.profile_picture.url }}" alt="Profile" class="profile-sidebar-avatar">
-    {% else %}
-      <span class="profile-sidebar-placeholder"><i class="fas fa-user"></i></span>
-    {% endif %}
-    <div class="profile-sidebar-info">
-      <div class="profile-sidebar-name">{{ user.first_name|default:user.username }}</div>
-      <div class="profile-sidebar-email">{{ user.email }}</div>
-    </div>
-  </div>
-  <ul class="profile-sidebar-menu">
-    <li><a href="{% url 'user_profile' %}"><i class="fas fa-user"></i> Your profile</a></li>
-    <li><a href="{% url 'logout_user' %}"><i class="fas fa-sign-out-alt"></i> Logout</a></li>
-  </ul>
-</aside>
-
 <style>
-.profile-sidebar-overlay {
-  position: fixed;
-  top: 0; left: 0; right: 0; bottom: 0;
-  background: rgba(0,0,0,0.35);
-  z-index: 999;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-.profile-sidebar-overlay.active {
-  opacity: 1;
-  pointer-events: auto;
-}
-.profile-sidebar {
-  position: fixed;
-  top: 0; right: 0;
-  width: 340px;
-  max-width: 90vw;
-  height: 100vh;
-  background: linear-gradient(135deg, #232526 0%, #414345 100%);
-  color: #fff;
-  box-shadow: -4px 0 32px rgba(0,0,0,0.18);
+.custom-navbar {
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 1rem 0;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  position: sticky;
+  top: 0;
   z-index: 1000;
-  transform: translateX(100%);
-  transition: transform 0.35s cubic-bezier(.77,0,.18,1);
+}
+
+.nav-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 2rem;
   display: flex;
-  flex-direction: column;
-  padding: 0;
+  justify-content: space-between;
+  align-items: center;
 }
-.profile-sidebar.active {
-  transform: translateX(0);
-}
-.profile-sidebar-close {
-  background: none;
-  border: none;
-  color: #fff;
-  font-size: 2.2rem;
-  position: absolute;
-  top: 18px;
-  right: 18px;
-  cursor: pointer;
-  z-index: 2;
-  transition: color 0.2s;
-}
-.profile-sidebar-close:hover {
-  color: #ff6b35;
-}
-.profile-sidebar-header {
+
+.nav-brand {
+  color: white;
+  text-decoration: none;
+  font-size: 1.5rem;
+  font-weight: 700;
   display: flex;
   align-items: center;
-  gap: 18px;
-  padding: 40px 32px 24px 32px;
-  border-bottom: 1px solid rgba(255,255,255,0.08);
+  gap: 0.5rem;
 }
-.profile-sidebar-avatar {
-  width: 64px;
-  height: 64px;
+
+.nav-brand i {
+  font-size: 1.8rem;
+}
+
+.nav-toggle {
+  display: none;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 1.5rem;
+  cursor: pointer;
+  padding: 0.5rem;
+}
+
+.nav-toggle-icon {
+  display: block;
+  width: 25px;
+  height: 3px;
+  background: white;
+  position: relative;
+  transition: all 0.3s ease;
+}
+
+.nav-toggle-icon::before,
+.nav-toggle-icon::after {
+  content: '';
+  position: absolute;
+  width: 25px;
+  height: 3px;
+  background: white;
+  transition: all 0.3s ease;
+}
+
+.nav-toggle-icon::before {
+  top: -8px;
+}
+
+.nav-toggle-icon::after {
+  bottom: -8px;
+}
+
+.nav-menu {
+  display: flex;
+  align-items: center;
+}
+
+.nav-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+}
+
+.nav-item {
+  margin: 0;
+}
+
+.nav-link {
+  color: white;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.nav-link:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: white;
+  transform: translateY(-2px);
+}
+
+.nav-link.login-btn {
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  font-weight: 600;
+}
+
+.nav-link.login-btn:hover {
+  background: rgba(255, 255, 255, 0.3);
+  border-color: rgba(255, 255, 255, 0.5);
+  transform: translateY(-2px);
+}
+
+/* User Profile Dropdown Styles */
+.user-profile-dropdown {
+  position: relative;
+}
+
+.user-profile-trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem 1rem;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  color: white;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.2);
+}
+
+.user-profile-trigger:hover {
+  background: rgba(255, 255, 255, 0.2);
+  border-color: rgba(255, 255, 255, 0.3);
+  transform: translateY(-2px);
+}
+
+.user-profile-pic {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
   object-fit: cover;
-  border: 3px solid #ff6b35;
-  background: #222;
+  border: 2px solid rgba(255, 255, 255, 0.3);
 }
-.profile-sidebar-placeholder {
-  width: 64px;
-  height: 64px;
+
+.user-profile-placeholder {
+  width: 32px;
+  height: 32px;
   border-radius: 50%;
-  background: rgba(255, 107, 53, 0.13);
-  color: #ff6b35;
+  background: rgba(255, 255, 255, 0.2);
+  border: 2px solid rgba(255, 255, 255, 0.3);
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 2.2rem;
-  border: 3px solid #ff6b35;
+  color: white;
+  font-size: 0.9rem;
 }
-.profile-sidebar-info {
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
+
+.user-name {
+  font-weight: 500;
+  color: white;
 }
-.profile-sidebar-name {
-  font-size: 1.2rem;
-  font-weight: 700;
-  color: #fff;
+
+.user-dropdown-menu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background: white;
+  border-radius: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+  min-width: 200px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-10px);
+  transition: all 0.3s ease;
+  margin-top: 0.5rem;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
-.profile-sidebar-email {
-  font-size: 0.98rem;
-  color: #ffbfa3;
-  word-break: break-all;
+
+.user-profile-dropdown:hover .user-dropdown-menu {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
 }
-.profile-sidebar-menu {
-  list-style: none;
-  margin: 0;
-  padding: 32px 0 0 0;
-  display: flex;
-  flex-direction: column;
-  gap: 2px;
-}
-.profile-sidebar-menu li a {
+
+.dropdown-item {
   display: flex;
   align-items: center;
-  gap: 12px;
-  color: #fff;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  color: #333;
   text-decoration: none;
-  font-size: 1.08rem;
-  padding: 16px 32px;
-  border-radius: 0 24px 24px 0;
-  transition: background 0.2s, color 0.2s, padding 0.2s;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  margin: 0.25rem;
 }
-.profile-sidebar-menu li a:hover {
-  background: rgba(255, 107, 53, 0.13);
-  color: #ff6b35;
-  padding-left: 40px;
+
+.dropdown-item:hover {
+  background: #f8f9fa;
+  color: #667eea;
+  transform: translateX(5px);
 }
-@media (max-width: 500px) {
-  .profile-sidebar {
-    width: 98vw;
-    min-width: 0;
-    padding: 0;
+
+.dropdown-divider {
+  height: 1px;
+  background: #e9ecef;
+  margin: 0.5rem 0;
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: block;
   }
-  .profile-sidebar-header {
-    padding: 32px 16px 18px 16px;
+  
+  .nav-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    flex-direction: column;
+    padding: 1rem 0;
+    transform: translateY(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
   }
-  .profile-sidebar-menu li a {
-    padding: 14px 16px;
+  
+  .nav-menu.active {
+    transform: translateY(0);
+    opacity: 1;
+    visibility: visible;
+  }
+  
+  .nav-list {
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+  }
+  
+  .nav-item {
+    width: 100%;
+  }
+  
+  .nav-link {
+    justify-content: center;
+    padding: 1rem;
+  }
+  
+  .user-profile-trigger {
+    justify-content: center;
+    width: 100%;
+  }
+  
+  .user-dropdown-menu {
+    position: static;
+    opacity: 1;
+    visibility: visible;
+    transform: none;
+    box-shadow: none;
+    background: rgba(255, 255, 255, 0.1);
+    margin-top: 0.5rem;
+  }
+  
+  .dropdown-item {
+    color: white;
+    justify-content: center;
+  }
+  
+  .dropdown-item:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: white;
   }
 }
 </style>
 
 <script>
 document.addEventListener('DOMContentLoaded', function() {
-  // Hamburger menu toggle
-  const toggle = document.getElementById('myoyo-navbar-toggle');
-  const links = document.getElementById('myoyo-navbar-links');
-  toggle.addEventListener('click', function() {
-    links.classList.toggle('active');
-    toggle.classList.toggle('active');
+  const navToggle = document.querySelector('.nav-toggle');
+  const navMenu = document.querySelector('.nav-menu');
+  
+  navToggle.addEventListener('click', function() {
+    navMenu.classList.toggle('active');
   });
-
-  // Profile sidebar drawer
-  const sidebarToggle = document.getElementById('profileSidebarToggle');
-  const sidebar = document.getElementById('profileSidebar');
-  const sidebarOverlay = document.getElementById('profileSidebarOverlay');
-  const sidebarClose = document.getElementById('profileSidebarClose');
-  if (sidebarToggle && sidebar && sidebarOverlay && sidebarClose) {
-    sidebarToggle.addEventListener('click', function(e) {
-      e.preventDefault();
-      sidebar.classList.add('active');
-      sidebarOverlay.classList.add('active');
-    });
-    sidebarClose.addEventListener('click', function() {
-      sidebar.classList.remove('active');
-      sidebarOverlay.classList.remove('active');
-    });
-    sidebarOverlay.addEventListener('click', function() {
-      sidebar.classList.remove('active');
-      sidebarOverlay.classList.remove('active');
-    });
-  }
+  
+  // Close menu when clicking outside
+  document.addEventListener('click', function(e) {
+    if (!navToggle.contains(e.target) && !navMenu.contains(e.target)) {
+      navMenu.classList.remove('active');
+    }
+  });
 });
 </script>
-
