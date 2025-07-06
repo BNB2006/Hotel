@@ -41,13 +41,35 @@
                   <i class="fas fa-chevron-down"></i>
                 </div>
                 <div class="user-dropdown-menu">
+                  <!-- User Info Section -->
+                  <div class="user-info-section">
+                    <div class="user-info-header">
+                      {% if user.hoteluser.profile_picture %}
+                        <img src="/media/{{ user.hoteluser.profile_picture }}" alt="Profile" class="dropdown-profile-pic">
+                      {% else %}
+                        <div class="dropdown-profile-placeholder">
+                          <i class="fas fa-user"></i>
+                        </div>
+                      {% endif %}
+                      <div class="user-details">
+                        <div class="user-full-name">{{ user.first_name }} {{ user.last_name }}</div>
+                        <div class="user-username">@{{ user.username }}</div>
+                      </div>
+                    </div>
+                  </div>
+                  
+                  <div class="dropdown-divider"></div>
+                  
+                  <!-- Menu Options -->
                   <a href="#" class="dropdown-item">
                     <i class="fas fa-user"></i>My Profile
                   </a>
                   <a href="#" class="dropdown-item">
-                    <i class="fas fa-calendar"></i>My Bookings
+                    <i class="fas fa-calendar-alt"></i>Bookings
                   </a>
-                  <div class="dropdown-divider"></div>
+                  <a href="#" class="dropdown-item">
+                    <i class="fas fa-edit"></i>Edit Profile
+                  </a>
                   <a href="{% url 'logout' %}" class="dropdown-item">
                     <i class="fas fa-sign-out-alt"></i>Logout
                   </a>
@@ -77,7 +99,8 @@
 
 <style>
 .custom-navbar {
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: rgba(255,255,255,0.15);
+  backdrop-filter: blur(12px);
   padding: 1rem 0;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: sticky;
@@ -246,17 +269,19 @@
 .user-dropdown-menu {
   position: absolute;
   top: 100%;
-  right: 0;
-  background: white;
-  border-radius: 12px;
-  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
-  min-width: 200px;
+  right: -35px;
+  background: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(20px);
+  border-radius: 16px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+  min-width: 280px;
   opacity: 0;
   visibility: hidden;
   transform: translateY(-10px);
   transition: all 0.3s ease;
   margin-top: 0.5rem;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  overflow: hidden;
 }
 
 .user-profile-dropdown:hover .user-dropdown-menu {
@@ -265,28 +290,92 @@
   transform: translateY(0);
 }
 
-.dropdown-item {
-  display: flex;
-  align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  color: #333;
-  text-decoration: none;
-  transition: all 0.2s ease;
-  border-radius: 8px;
-  margin: 0.25rem;
+/* User Info Section */
+.user-info-section {
+  padding: 1.5rem;
+  background: transparent;
 }
 
-.dropdown-item:hover {
-  background: #f8f9fa;
+.user-info-header {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.dropdown-profile-pic {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.dropdown-profile-placeholder {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  border: 3px solid rgba(102, 126, 234, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 1.4rem;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.user-details {
+  flex: 1;
+}
+
+.user-full-name {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #333;
+  margin-bottom: 0.25rem;
+}
+
+.user-username {
+  font-weight: 500;
   color: #667eea;
-  transform: translateX(5px);
+  font-size: 0.9rem;
+  margin-bottom: 0.25rem;
+}
+
+.user-email {
+  color: #666;
+  font-size: 0.85rem;
+  word-break: break-all;
 }
 
 .dropdown-divider {
   height: 1px;
-  background: #e9ecef;
-  margin: 0.5rem 0;
+  background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.2), transparent);
+  margin: 0;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 1rem 1.5rem;
+  color: #333;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+
+.dropdown-item:hover {
+  background: transparent;
+  color: #667eea;
+  transform: translateX(5px);
+}
+
+.dropdown-item i {
+  width: 16px;
+  text-align: center;
+  color: #667eea;
 }
 
 /* Mobile responsive */
@@ -341,8 +430,19 @@
     visibility: visible;
     transform: none;
     box-shadow: none;
-    background: rgba(255, 255, 255, 0.1);
+    background: rgba(255,255,255,0.15);
+    backdrop-filter: blur(10px);
     margin-top: 0.5rem;
+  }
+  
+  .user-info-section {
+    background: transparent;
+  }
+  
+  .user-full-name,
+  .user-username,
+  .user-email {
+    color: white;
   }
   
   .dropdown-item {
@@ -352,6 +452,10 @@
   
   .dropdown-item:hover {
     background: rgba(255, 255, 255, 0.1);
+    color: white;
+  }
+  
+  .dropdown-item i {
     color: white;
   }
 }
