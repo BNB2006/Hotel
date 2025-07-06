@@ -399,4 +399,38 @@ def logout_user(request):
 
 @login_required(login_url='login_page')
 def user_profile(request):
-    return render(request, 'user_profile.html', {'user': request.user})
+    user = request.user
+    if request.method == "POST":
+        username = request.POST.get('username')
+        name = request.POST.get('name')
+        email = request.POST.get('email')
+        phone = request.POST.get('phone')
+        address = request.POST.get('address')
+        # Split name into first and last
+        if name:
+            name_parts = name.strip().split(' ', 1)
+            user.first_name = name_parts[0]
+            user.last_name = name_parts[1] if len(name_parts) > 1 else ''
+        # Uniqueness checks
+        if username and username != user.username:
+            if HotelUser.objects.filter(username=username).exclude(id=user.id).exists():
+                messages.error(request, "Username is already taken by another user.")
+                return redirect('user_profile')
+            user.username = username
+        if email and email != user.email:
+            if HotelUser.objects.filter(email=email).exclude(id=user.id).exists():
+                messages.error(request, "Email is already taken by another user.")
+                return redirect('user_profile')
+            user.email = email
+        if phone and phone != user.hoteluser.phone_number:
+            if HotelUser.objects.filter(phone_number=phone).exclude(id=user.id).exists():
+                messages.error(request, "Phone number is already taken by another user.")
+                return redirect('user_profile')
+            user.hoteluser.phone_number = phone
+        if address:
+            user.hoteluser.address = address
+        user.save()
+        user.hoteluser.save()
+        messages.success(request, "Profile updated successfully!")
+        return redirect('user_profile')
+    return render(request, 'user_profile.html', {'user': user})

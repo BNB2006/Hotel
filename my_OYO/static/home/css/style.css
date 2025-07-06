@@ -47,14 +47,19 @@ h1, h2, h3, h4, h5, h6 {
 /*<----------------------------Navbar Styles----------------------------> */
 
 .custom-navbar {
-  background: var(--card-bg);
+  background: linear-gradient(
+    to bottom,
+    rgba(180, 150, 255, 0.70) 0%,    /* Light pastel purple */
+    rgba(160, 180, 255, 0.55) 60%,   /* Light indigo/blue */
+    rgba(44, 182, 125, 0.10) 100%    /* Very subtle green */
+  );
   backdrop-filter: blur(12px);
+  border-bottom: 1.5px solid rgba(255,255,255,0.10);
+  box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  z-index: 100;
   padding: 1rem 0;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
   position: sticky;
   top: 0;
-  z-index: 1000;
-  border-bottom: 1px solid var(--glass-border);
 }
 
 .nav-container {
