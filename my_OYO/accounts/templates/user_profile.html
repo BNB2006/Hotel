@@ -1,0 +1,148 @@
+{% extends "utils/base.html" %}
+{% load static %}
+{% block start %}
+<link rel="stylesheet" href="{% static 'home/css/user_profile.css' %}">
+<div class="user-profile-hero-bg">
+  <div class="user-profile-hero-card">
+    <div class="user-profile-avatar-section">
+      <div class="user-profile-avatar-container">
+        <img src="/media/{{ user.hoteluser.profile_picture }}" alt="Profile" class="user-profile-avatar">
+        <button class="avatar-edit-btn"><i class="fas fa-camera"></i></button>
+      </div>
+      <div class="user-profile-info">
+        <div class="user-profile-name">{{ user.first_name }} {{ user.last_name }}</div>
+        <div class="user-profile-email">{{ user.email }}</div>
+        <div class="user-profile-badges">
+          <span class="badge badge-gold">Gold Member</span>
+        </div>
+      </div>
+    </div>
+    <div class="user-profile-edit-btn-section">
+      <button class="edit-profile-btn"><i class="fas fa-edit"></i> Edit Profile</button>
+    </div>
+  </div>
+</div>
+
+<div class="user-profile-tabs-container">
+  <div class="user-profile-tabs">
+    <button class="profile-tab active" data-tab="overview"><i class="fas fa-user"></i> Overview</button>
+    <button class="profile-tab" data-tab="bookings"><i class="fas fa-calendar-check"></i> Bookings</button>
+    <button class="profile-tab" data-tab="settings"><i class="fas fa-cog"></i> Settings</button>
+    <button class="profile-tab" data-tab="payments"><i class="fas fa-credit-card"></i> Payments</button>
+  </div>
+  <div class="user-profile-tab-content">
+    <!-- Overview Tab -->
+    <div class="tab-pane active" id="overview">
+      <div class="overview-columns">
+        <div class="overview-left">
+          <div class="card glass-card">
+            <h4 class="card-title">Personal Information</h4>
+            <form>
+              <div class="form-group"><label>Name</label><input type="text" value="{{ user.first_name }} {{ user.last_name }}"></div>
+              <div class="form-group"><label>Email</label><input type="email" value="{{ user.email }}"></div>
+              <div class="form-group"><label>Phone</label><input type="text" value="{{ user.hoteluser.phone_number }}"></div>
+              <div class="form-group"><label>Address</label><input type="text" value="123 Main St, City, Country"></div>
+              <button class="save-btn" type="button">Save Changes</button>
+            </form>
+          </div>
+        </div>
+        <div class="overview-right">
+          <div class="card glass-card">
+            <h4 class="card-title">Account Statistics</h4>
+            <ul class="stats-list">
+              <li><span>Total Bookings</span><span>12</span></li>
+              <li><span>Nights Stayed</span><span>34</span></li>
+              <li><span>Loyalty Points</span><span>2,500</span></li>
+              <li><span>Member Since</span><span>Jan 2022</span></li>
+            </ul>
+          </div>
+          <div class="card glass-card">
+            <h4 class="card-title">Recent Activity</h4>
+            <ul class="activity-list">
+              <li><i class="fas fa-calendar-check"></i> Booked "Hotel Paradise" <span class="activity-date">2 days ago</span></li>
+              <li><i class="fas fa-star"></i> Left a review <span class="activity-date">5 days ago</span></li>
+              <li><i class="fas fa-gift"></i> Earned 500 points <span class="activity-date">1 week ago</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- Bookings Tab -->
+    <div class="tab-pane" id="bookings">
+      <h4 class="card-title">Booking History</h4>
+      <div class="bookings-list">
+        <div class="booking-card">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" class="booking-hotel-img" alt="Hotel">
+          <div class="booking-info">
+            <div class="booking-hotel-name">Hotel Paradise</div>
+            <div class="booking-location">Goa, India</div>
+            <div class="booking-dates">12 Jul 2024 - 15 Jul 2024</div>
+            <div class="booking-status status-completed">Completed</div>
+            <div class="booking-amount">₹9,600</div>
+            <div class="booking-actions">
+              <button class="btn-action">View</button>
+              <button class="btn-action">Invoice</button>
+              <button class="btn-action">Review</button>
+            </div>
+          </div>
+        </div>
+        <!-- More booking cards here -->
+      </div>
+    </div>
+    <!-- Settings Tab -->
+    <div class="tab-pane" id="settings">
+      <h4 class="card-title">Account Settings</h4>
+      <div class="settings-section">
+        <h5>Notification Preferences</h5>
+        <label><input type="checkbox" checked> Email Notifications</label>
+        <label><input type="checkbox"> SMS Notifications</label>
+        <label><input type="checkbox" checked> Push Notifications</label>
+      </div>
+      <div class="settings-section">
+        <h5>Privacy Settings</h5>
+        <label><input type="checkbox" checked> Profile Visible to Others</label>
+      </div>
+      <div class="settings-section">
+        <h5>Security Settings</h5>
+        <button class="btn-action">Change Password</button>
+        <button class="btn-action">Enable 2FA</button>
+      </div>
+      <div class="settings-section">
+        <h5>Language & Region</h5>
+        <select><option>English (IN)</option><option>English (US)</option></select>
+      </div>
+      <div class="settings-section danger-zone">
+        <h5>Danger Zone</h5>
+        <button class="btn-danger">Delete Account</button>
+      </div>
+    </div>
+    <!-- Payments Tab -->
+    <div class="tab-pane" id="payments">
+      <h4 class="card-title">Payment Methods</h4>
+      <div class="payments-list">
+        <div class="payment-card">
+          <i class="fas fa-credit-card"></i> **** 1234 &nbsp; <span class="payment-type">Visa</span>
+          <button class="btn-action">Remove</button>
+        </div>
+        <!-- More payment cards here -->
+        <button class="btn-action add-payment-btn"><i class="fas fa-plus"></i> Add New Payment Method</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+// Tab switching logic
+const tabs = document.querySelectorAll('.profile-tab');
+const panes = document.querySelectorAll('.tab-pane');
+tabs.forEach(tab => {
+  tab.addEventListener('click', function() {
+    tabs.forEach(t => t.classList.remove('active'));
+    panes.forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab).classList.add('active');
+  });
+});
+</script>
+{% endblock %} 

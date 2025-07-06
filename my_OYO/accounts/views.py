@@ -10,7 +10,7 @@ from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseForbidden
 
 # Create your views here.
-def login_page(request): 
+def login_page(request):    
     if request.method == "POST":
         email = request.POST.get('email')
         password = request.POST.get('password')
@@ -396,3 +396,7 @@ def logout_user(request):
     logout(request)
     messages.success(request, "Logout Success")
     return redirect('/')
+
+@login_required(login_url='login_page')
+def user_profile(request):
+    return render(request, 'user_profile.html', {'user': request.user})

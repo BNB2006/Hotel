@@ -1,0 +1,560 @@
+/* User Profile Page Styles */
+
+.user-profile-hero-bg {
+  background: linear-gradient(135deg, #7F5AF0 0%, #2CB67D 100%);
+  padding: 0 0 48px 0;
+}
+
+.user-profile-hero-card {
+  max-width: 900px;
+  margin: 0 auto;
+  background: rgba(34, 34, 64, 0.85);
+  border-radius: 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.10);
+  padding: 2.5rem 2rem 2rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 2rem;
+  position: relative;
+  top: 48px;
+}
+
+.user-profile-avatar-section {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+.user-profile-avatar-container {
+  position: relative;
+}
+
+.user-profile-avatar {
+  width: 96px;
+  height: 96px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 3px solid var(--primary-color);
+  background: #fff;
+}
+
+.avatar-edit-btn {
+  position: absolute;
+  bottom: 0;
+  right: 0;
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(127,90,240,0.08);
+  transition: background 0.2s;
+}
+
+.avatar-edit-btn:hover {
+  background: var(--accent-color);
+  color: var(--background);
+}
+
+.user-profile-info {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.user-profile-name {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.user-profile-email {
+  color: var(--text-secondary);
+  font-size: 1rem;
+}
+
+.user-profile-badges .badge {
+  background: var(--accent-color);
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.2rem 0.7rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  margin-top: 0.3rem;
+  display: inline-block;
+}
+
+.user-profile-edit-btn-section {
+  margin-left: auto;
+}
+
+.edit-profile-btn {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  padding: 0.7rem 2rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px rgba(127,90,240,0.08);
+  transition: background 0.2s, color 0.2s;
+}
+
+.edit-profile-btn:hover {
+  background: var(--accent-color);
+  color: var(--background);
+}
+
+.user-profile-tabs-container {
+  max-width: 900px;
+  margin: 0 auto;
+  margin-top: 48px;
+}
+
+.user-profile-tabs {
+  display: flex;
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+  justify-content: flex-start;
+}
+
+.profile-tab {
+  background: none;
+  border: none;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+  font-weight: 600;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px 8px 0 0;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.profile-tab.active, .profile-tab:hover {
+  background: var(--card-bg);
+  color: var(--primary-color);
+}
+
+.user-profile-tab-content {
+  background: rgba(34, 34, 64, 0.85);
+  border-radius: 0 0 24px 24px;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.08);
+  border: 1.5px solid var(--glass-border);
+  border-top: none;
+  padding: 2rem 2.5rem 2.5rem 2.5rem;
+}
+
+.tab-pane { 
+  display: none; 
+}
+
+.tab-pane.active { 
+  display: block; 
+}
+
+/* Overview Tab Styles */
+.overview-columns {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 2rem;
+}
+
+.overview-left, .overview-right {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.glass-card {
+  background: var(--card-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+}
+
+.card-title {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.form-group {
+  margin-bottom: 1.2rem;
+}
+
+.form-group label {
+  display: block;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1.5px solid var(--glass-border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary);
+  font-size: 1rem;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group input:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 3px rgba(127,90,240,0.1);
+}
+
+.save-btn {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  padding: 0.8rem 2rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 1rem;
+}
+
+.save-btn:hover {
+  background: var(--accent-color);
+  color: var(--background);
+}
+
+/* Stats and Activity Lists */
+.stats-list, .activity-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.stats-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--glass-border);
+}
+
+.stats-list li:last-child {
+  border-bottom: none;
+}
+
+.stats-list li span:first-child {
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+.stats-list li span:last-child {
+  color: var(--text-primary);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.activity-list li {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.8rem 0;
+  border-bottom: 1px solid var(--glass-border);
+  color: var(--text-primary);
+}
+
+.activity-list li:last-child {
+  border-bottom: none;
+}
+
+.activity-list li i {
+  color: var(--primary-color);
+  width: 16px;
+}
+
+.activity-date {
+  margin-left: auto;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+/* Bookings Tab Styles */
+.bookings-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.booking-card {
+  display: flex;
+  gap: 1.5rem;
+  background: var(--card-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  backdrop-filter: blur(10px);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.booking-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.15);
+}
+
+.booking-hotel-img {
+  width: 120px;
+  height: 80px;
+  border-radius: 12px;
+  object-fit: cover;
+  flex-shrink: 0;
+}
+
+.booking-info {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.booking-hotel-name {
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.booking-location {
+  color: var(--text-secondary);
+  font-size: 0.95rem;
+}
+
+.booking-dates {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.booking-status {
+  display: inline-block;
+  padding: 0.3rem 0.8rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.status-completed {
+  background: rgba(44, 182, 125, 0.2);
+  color: var(--secondary-color);
+}
+
+.status-upcoming {
+  background: rgba(127, 90, 240, 0.2);
+  color: var(--primary-color);
+}
+
+.status-cancelled {
+  background: rgba(239, 68, 68, 0.2);
+  color: #ef4444;
+}
+
+.booking-amount {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.booking-actions {
+  display: flex;
+  gap: 0.8rem;
+  margin-top: 0.5rem;
+}
+
+/* Settings Tab Styles */
+.settings-section {
+  background: var(--card-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  margin-bottom: 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.settings-section h5 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.settings-section label {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  margin-bottom: 0.8rem;
+  color: var(--text-primary);
+  cursor: pointer;
+}
+
+.settings-section input[type="checkbox"] {
+  width: auto;
+  margin: 0;
+}
+
+.settings-section select {
+  width: 200px;
+  padding: 0.6rem 1rem;
+  border: 1.5px solid var(--glass-border);
+  border-radius: 8px;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-primary);
+}
+
+.danger-zone {
+  border-color: rgba(239, 68, 68, 0.3);
+  background: rgba(239, 68, 68, 0.05);
+}
+
+/* Payments Tab Styles */
+.payments-list {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.payment-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--card-bg);
+  border: 1.5px solid var(--glass-border);
+  border-radius: 12px;
+  padding: 1.2rem 1.5rem;
+  backdrop-filter: blur(10px);
+}
+
+.payment-card i {
+  color: var(--primary-color);
+  margin-right: 0.5rem;
+}
+
+.payment-type {
+  background: var(--accent-color);
+  color: var(--background);
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.8rem;
+  font-weight: 600;
+}
+
+.add-payment-btn {
+  background: var(--primary-color);
+  color: #fff;
+  border: none;
+  border-radius: 12px;
+  padding: 1rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 1rem;
+}
+
+.add-payment-btn:hover {
+  background: var(--accent-color);
+  color: var(--background);
+}
+
+/* Button Styles */
+.btn-action {
+  background: rgba(127, 90, 240, 0.1);
+  color: var(--primary-color);
+  border: 1.5px solid var(--primary-color);
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-action:hover {
+  background: var(--primary-color);
+  color: #fff;
+}
+
+.btn-danger {
+  background: rgba(239, 68, 68, 0.1);
+  color: #ef4444;
+  border: 1.5px solid #ef4444;
+  border-radius: 8px;
+  padding: 0.8rem 1.5rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-danger:hover {
+  background: #ef4444;
+  color: #fff;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .user-profile-hero-card {
+    flex-direction: column;
+    text-align: center;
+    padding: 2rem 1.5rem;
+  }
+  
+  .user-profile-edit-btn-section {
+    margin-left: 0;
+    margin-top: 1rem;
+  }
+  
+  .overview-columns {
+    grid-template-columns: 1fr;
+  }
+  
+  .booking-card {
+    flex-direction: column;
+  }
+  
+  .booking-hotel-img {
+    width: 100%;
+    height: 120px;
+  }
+  
+  .user-profile-tabs {
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  .profile-tab {
+    font-size: 1rem;
+    padding: 0.6rem 1rem;
+  }
+  
+  .user-profile-tab-content {
+    padding: 1.5rem;
+  }
+} 
