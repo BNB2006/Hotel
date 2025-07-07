@@ -8,30 +8,36 @@
       <i class="fas fa-store" style="font-size: 3rem; color: var(--primary-color);"></i>
     </div>
     <h2 class="auth-title">Vendor Registration</h2>
-    <form method="POST" autocomplete="off">
+    <form method="POST" autocomplete="off" class="modern-auth-form">
       {% csrf_token %}
       <div class="row g-2">
-        <div class="col-md-6">
-          <input type="text" name="first_name" class="auth-input" placeholder="First Name" required>
+        <div class="col-md-6 form-group">
+          <label for="vendorRegFirstName"><i class="fas fa-user"></i> First Name</label>
+          <input type="text" id="vendorRegFirstName" name="first_name" required>
         </div>
-        <div class="col-md-6">
-          <input type="text" name="last_name" class="auth-input" placeholder="Last Name" required>
-        </div>
-      </div>
-      <div class="row g-2">
-        <div class="col-md-6">
-          <input type="text" name="business_name" class="auth-input" placeholder="Business Name" required>
-        </div>
-        <div class="col-md-6">
-          <input type="text" name="phone_number" class="auth-input" placeholder="Phone Number" required>
+        <div class="col-md-6 form-group">
+          <label for="vendorRegLastName"><i class="fas fa-user"></i> Last Name</label>
+          <input type="text" id="vendorRegLastName" name="last_name" required>
         </div>
       </div>
       <div class="row g-2">
-        <div class="col-md-6">
-          <input type="email" name="email" class="auth-input" placeholder="Email" required>
+        <div class="col-md-6 form-group">
+          <label for="vendorRegBusiness"><i class="fas fa-briefcase"></i> Business Name</label>
+          <input type="text" id="vendorRegBusiness" name="business_name" required>
         </div>
-        <div class="col-md-6">
-          <input type="password" name="password" class="auth-input" placeholder="Password" required>
+        <div class="col-md-6 form-group">
+          <label for="vendorRegPhone"><i class="fas fa-phone"></i> Phone Number</label>
+          <input type="text" id="vendorRegPhone" name="phone_number" required>
+        </div>
+      </div>
+      <div class="row g-2">
+        <div class="col-md-6 form-group">
+          <label for="vendorRegEmail"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="vendorRegEmail" name="email" required>
+        </div>
+        <div class="col-md-6 form-group">
+          <label for="vendorRegPassword"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="vendorRegPassword" name="password" required>
         </div>
       </div>
       <button type="submit" class="btn-primary-custom auth-btn">Register</button>

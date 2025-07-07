@@ -2,10 +2,10 @@
 {% block start %}
 
 <!-- Hotels Top Bar: Title (left) and Search/Sort (right) -->
-<section class="hotels-topbar-section py-3">
+<section class="py-3">
   <div class="container">
     <div class="d-flex flex-column flex-md-row align-items-md-center justify-content-between gap-3">
-      <div class="hotels-title mb-2 mb-md-0" style="font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: 0.5px;">All Hotels</div>
+      <div class="hotels-title mb-2 mb-md-0" style="font-size: 2rem; font-weight: 700; color: #fff; letter-spacing: 0.5px;"></div>
       <form method="GET" action="{% url 'hotels' %}" id="searchForm" class="d-flex flex-wrap gap-2 align-items-center justify-content-end hotels-searchbar">
         <input type="text" name="search" class="form-control search-input" placeholder="Search hotels..." value="{{ search_query }}" style="max-width: 220px; min-width: 120px;">
         <select class="form-control search-input" name="sort_by" id="sortSelect" style="max-width: 140px; min-width: 90px;">

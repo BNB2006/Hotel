@@ -3,16 +3,22 @@
 
 {% block start %}
 <div class="container auth-vertical-center">
-  <div class="auth-card fade-in-up">
+  <div class="auth-card fade-in-up" style="width: 450px;">
     <div class="mb-4">
       <i class="fas fa-store" style="font-size: 3rem; color: var(--primary-color);"></i>
     </div>
     <h2 class="auth-title">Vendor Login</h2>
     
-    <form method="POST" autocomplete="off">
+    <form method="POST" autocomplete="off" class="modern-auth-form">
       {% csrf_token %}
-      <input type="email" name="email" class="auth-input" placeholder="Vendor Email" required autofocus>
-      <input type="password" name="password" class="auth-input" placeholder="Password" required>
+      <div class="form-group">
+        <label for="vendorLoginEmail"><i class="fas fa-envelope"></i> Vendor Email</label>
+        <input type="email" id="vendorLoginEmail" name="email" required autofocus>
+      </div>
+      <div class="form-group">
+        <label for="vendorLoginPassword"><i class="fas fa-lock"></i> Password</label>
+        <input type="password" id="vendorLoginPassword" name="password" required>
+      </div>
       <button type="submit" class="btn-primary-custom auth-btn">Login</button>
     </form>
     <div class="mt-2">
