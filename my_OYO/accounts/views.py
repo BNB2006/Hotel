@@ -399,38 +399,54 @@ def logout_user(request):
 
 @login_required(login_url='login_page')
 def user_profile(request):
+    # Only allow HotelUser users
+    if not hasattr(request.user, 'hoteluser'):
+        return HttpResponseForbidden("You are not authorized to view this page.")
     user = request.user
+    hoteluser = user.hoteluser
+    from django.http import JsonResponse
     if request.method == "POST":
-        username = request.POST.get('username')
-        name = request.POST.get('name')
-        email = request.POST.get('email')
-        phone = request.POST.get('phone')
-        address = request.POST.get('address')
+        # Handle AJAX profile picture upload
+        if request.FILES.get('profile_picture') and request.POST.get('ajax') == '1':
+            profile_picture = request.FILES['profile_picture']
+            hoteluser.profile_picture = profile_picture
+            hoteluser.save(update_fields=["profile_picture"])
+            image_url = hoteluser.profile_picture.url if hoteluser.profile_picture else ''
+            return JsonResponse({"success": True, "image_url": image_url})
+        # Handle normal profile update
+        name = request.POST.get('name', '').strip()
+        username = request.POST.get('username', '').strip()
+        email = request.POST.get('email', '').strip()
+        phone = request.POST.get('phone', '').strip()
         # Split name into first and last
-        if name:
-            name_parts = name.strip().split(' ', 1)
-            user.first_name = name_parts[0]
-            user.last_name = name_parts[1] if len(name_parts) > 1 else ''
+        first_name, last_name = '', ''
+        if ' ' in name:
+            first_name, last_name = name.split(' ', 1)
+        else:
+            first_name = name
         # Uniqueness checks
+        from django.contrib.auth.models import User
         if username and username != user.username:
-            if HotelUser.objects.filter(username=username).exclude(id=user.id).exists():
-                messages.error(request, "Username is already taken by another user.")
-                return redirect('user_profile')
-            user.username = username
+            if User.objects.filter(username=username).exclude(id=user.id).exists():
+                messages.error(request, "Username is already taken.")
+                return render(request, 'user_profile.html')
         if email and email != user.email:
-            if HotelUser.objects.filter(email=email).exclude(id=user.id).exists():
-                messages.error(request, "Email is already taken by another user.")
-                return redirect('user_profile')
-            user.email = email
-        if phone and phone != user.hoteluser.phone_number:
-            if HotelUser.objects.filter(phone_number=phone).exclude(id=user.id).exists():
-                messages.error(request, "Phone number is already taken by another user.")
-                return redirect('user_profile')
-            user.hoteluser.phone_number = phone
-        if address:
-            user.hoteluser.address = address
-        user.save()
-        user.hoteluser.save()
+            if User.objects.filter(email=email).exclude(id=user.id).exists():
+                messages.error(request, "Email is already taken.")
+                return render(request, 'user_profile.html')
+        if phone and phone != hoteluser.phone_number:
+            if HotelUser.objects.filter(phone_number=phone).exclude(id=hoteluser.id).exists():
+                messages.error(request, "Phone number is already taken.")
+                return render(request, 'user_profile.html')
+        # Save changes to User model
+        user.first_name = first_name
+        user.last_name = last_name
+        user.username = username
+        user.email = email
+        user.save(update_fields=["first_name", "last_name", "username", "email"])
+        # Save changes to HotelUser model
+        hoteluser.phone_number = phone
+        hoteluser.save(update_fields=["phone_number"])
         messages.success(request, "Profile updated successfully!")
         return redirect('user_profile')
-    return render(request, 'user_profile.html', {'user': user})
+    return render(request, 'user_profile.html')

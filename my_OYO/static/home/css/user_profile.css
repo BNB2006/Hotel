@@ -617,7 +617,8 @@
 
 .settings-form-card {
   padding: 2.2rem 2rem 2rem 2rem;
-  border-radius: 20px;
+  border: none;
+  /* border-radius: 0%; */
   box-shadow: 0 8px 32px rgba(127,90,240,0.08);
   background: var(--card-bg, rgba(255,255,255,0.05));
   display: flex;
@@ -668,19 +669,26 @@
   font-size: 1.1rem;
 }
 .modern-settings-form input {
-  background: rgba(255,255,255,0.08);
-  border: 1.5px solid var(--glass-border);
-  border-radius: 8px;
-  padding: 0.85rem 1.1rem;
+  background: none;
+  border: none;
+  border-bottom: 1px solid var(--glass-border);
   color: var(--text-primary);
-  font-size: 1.05rem;
-  font-weight: 500;
-  transition: border-color 0.2s, box-shadow 0.2s;
+  font-size: 1.08rem;
+  font-weight: 600;
+  width: 100%;
   outline: none;
+  transition: background 0.2s, border-bottom 0.2s, box-shadow 0.2s;
+  box-shadow: none;
+  padding: 0.2rem 0 0.2rem 0;
+  margin: 0;
 }
-.modern-settings-form input:focus {
-  border-color: var(--primary-color, #7F5AF0);
-  box-shadow: 0 0 0 3px rgba(127,90,240,0.10);
+.modern-settings-form input {
+  background: rgba(127,90,240,0.08);
+  border-bottom: 2px solid var(--primary-color);
+  color: var(--primary-color);
+  box-shadow: 0 2px 8px rgba(127,90,240,0.12);
+  padding: 2px 0;
+  border-radius: 0%;
 }
 .form-divider {
   height: 1px;
@@ -696,8 +704,8 @@
   border: none;
   border-radius: 10px;
   font-weight: 700;
-  font-size: 1.08rem;
-  padding: 0.95rem 2.2rem;
+  font-size: 1rem;
+  /* padding: 0.95rem 2.2rem; */
   box-shadow: 0 2px 12px rgba(127,90,240,0.10);
   transition: background 0.2s, color 0.2s, box-shadow 0.2s;
   display: flex;

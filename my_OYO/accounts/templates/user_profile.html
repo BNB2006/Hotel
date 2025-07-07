@@ -5,15 +5,18 @@
 <div class="user-profile-hero-bg">
   <div class="user-profile-hero-card">
     <div class="user-profile-avatar-section">
-      <div class="user-profile-avatar-container">
-        <img src="/media/{{ user.hoteluser.profile_picture }}" alt="Profile" class="user-profile-avatar">
-        <button class="avatar-edit-btn"><i class="fas fa-camera"></i></button>
-      </div>
+      <form id="avatarUploadForm" enctype="multipart/form-data" style="display:inline;">
+        <div class="user-profile-avatar-container">
+          <img src="{% if user.hoteluser.profile_picture %}/media/{{ user.hoteluser.profile_picture }}{% else %}{% static 'img/default_profile.png' %}{% endif %}" alt="Profile" class="user-profile-avatar" id="userAvatarImg">
+          <input type="file" id="avatarFileInput" name="profile_picture" accept="image/*" style="display:none;">
+          <button type="button" class="avatar-edit-btn" id="avatarEditBtn"><i class="fas fa-camera"></i></button>
+        </div>
+      </form>
       <div class="user-profile-info">
         <div class="user-profile-name">{{ user.first_name }} {{ user.last_name }}</div>
         <div class="user-profile-username">@{{ user.username }}</div>
         <div class="user-profile-email">{{ user.email }}</div>
-        <div class="user-profile-badges">
+        <div class="user-profile-badges">132
           <span class="badge badge-gold">Gold Member</span>
         </div>
       </div>
@@ -97,7 +100,7 @@
     </div>
     <!-- Settings Tab -->
     <div class="tab-pane" id="settings">
-      <div class="card glass-card settings-form-card">
+      <div class="card settings-form-card">
         <div class="settings-form-header">
           <span class="settings-form-icon"><i class="fas fa-user-cog"></i></span>
           <h4 class="card-title">Edit Personal Information</h4>
@@ -120,12 +123,8 @@
             <label for="settingsPhone"><i class="fas fa-phone"></i> Phone</label>
             <input id="settingsPhone" name="phone" type="text" value="{{ user.hoteluser.phone_number }}">
           </div>
-          <div class="form-group">
-            <label for="settingsAddress"><i class="fas fa-map-marker-alt"></i> Address</label>
-            <input id="settingsAddress" name="address" type="text" value="{{ user.hoteluser.address|default:'' }}">
-          </div>
           <div class="form-divider"></div>
-          <button class="save-btn modern-save-btn" type="submit"><i class="fas fa-save"></i> Save Changes</button>
+          <button class="save-btn" type="submit"><i class="fas fa-save"></i> Save Changes</button>
         </form>
       </div>
     </div>
@@ -165,5 +164,40 @@ if (editProfileBtn) {
     if (settingsTab) settingsTab.click();
   });
 }
+
+// Avatar upload logic
+const avatarEditBtn = document.getElementById('avatarEditBtn');
+const avatarFileInput = document.getElementById('avatarFileInput');
+const avatarForm = document.getElementById('avatarUploadForm');
+const avatarImg = document.getElementById('userAvatarImg');
+
+avatarEditBtn.addEventListener('click', function(e) {
+  e.preventDefault();
+  avatarFileInput.click();
+});
+
+avatarFileInput.addEventListener('change', function() {
+  if (avatarFileInput.files.length > 0) {
+    const formData = new FormData();
+    formData.append('profile_picture', avatarFileInput.files[0]);
+    formData.append('ajax', '1');
+    fetch(window.location.pathname, {
+      method: 'POST',
+      headers: {
+        'X-CSRFToken': document.querySelector('[name=csrfmiddlewaretoken]').value
+      },
+      body: formData
+    })
+    .then(response => response.json())
+    .then(data => {
+      if (data.success && data.image_url) {
+        avatarImg.src = data.image_url + '?t=' + new Date().getTime();
+      } else if (data.error) {
+        alert(data.error);
+      }
+    })
+    .catch(() => alert('Upload failed.'));
+  }
+});
 </script>
 {% endblock %} 
