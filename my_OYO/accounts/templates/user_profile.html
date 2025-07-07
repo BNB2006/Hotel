@@ -16,7 +16,7 @@
         <div class="user-profile-name">{{ user.first_name }} {{ user.last_name }}</div>
         <div class="user-profile-username">@{{ user.username }}</div>
         <div class="user-profile-email">{{ user.email }}</div>
-        <div class="user-profile-badges">132
+        <div class="user-profile-badges">
           <span class="badge badge-gold">Gold Member</span>
         </div>
       </div>
@@ -51,7 +51,6 @@
               <div class="info-row"><span class="info-label"><i class="fas fa-user-tag"></i> Username</span> <span class="info-value">@{{ user.username }}</span></div>
               <div class="info-row"><span class="info-label"><i class="fas fa-envelope"></i> Email</span> <span class="info-value">{{ user.email }}</span></div>
               <div class="info-row"><span class="info-label"><i class="fas fa-phone"></i> Phone</span> <span class="info-value">{{ user.hoteluser.phone_number }}</span></div>
-              <div class="info-row"><span class="info-label"><i class="fas fa-map-marker-alt"></i> Address</span> <span class="info-value">123 Main St, City, Country</span></div>
             </div>
           </div>
         </div>
@@ -155,6 +154,14 @@ tabs.forEach(tab => {
     tab.classList.add('active');
     document.getElementById(tab.dataset.tab).classList.add('active');
   });
+});
+// Activate tab based on URL fragment
+window.addEventListener('DOMContentLoaded', function() {
+  const hash = window.location.hash.replace('#', '');
+  if (hash) {
+    const tabBtn = document.querySelector('.profile-tab[data-tab="' + hash + '"]');
+    if (tabBtn) tabBtn.click();
+  }
 });
 // Edit Profile button switches to Settings tab
 const editProfileBtn = document.getElementById('editProfileBtn');

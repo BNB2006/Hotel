@@ -64,10 +64,10 @@
                   <a href="{% url 'user_profile' %}" class="dropdown-item">
                     <i class="fas fa-user"></i>My Profile
                   </a>
-                  <a href="#" class="dropdown-item">
+                  <a href="{% url 'user_profile' %}#bookings" class="dropdown-item">
                     <i class="fas fa-calendar-alt"></i>Bookings
                   </a>
-                  <a href="#" class="dropdown-item">
+                  <a href="{% url 'user_profile' %}#settings" class="dropdown-item">
                     <i class="fas fa-edit"></i>Edit Profile
                   </a>
                   <a href="{% url 'logout' %}" class="dropdown-item">
