@@ -1,4 +1,5 @@
 {% extends "utils/base.html" %}
+{% load static %}
 {% block start %}
 
 <!-- Hero Section -->
@@ -23,7 +24,7 @@
       </div>
       <div class="col-lg-6 text-center fade-in-up" style="animation-delay: 0.2s;">
         <div class="glass-card">
-          <i class="fas fa-hotel" style="font-size: 8rem; color: var(--primary-color); margin-bottom: 2rem;"></i>
+          <img src="{% static 'img/logo.png' %}" alt="BookMyNest Logo" style="height:10rem;overflow: hidden;">
           <h3 class="mb-3">Premium Experience</h3>
           <p class="text-muted">Handpicked luxury hotels for the discerning traveler</p>
         </div>
@@ -87,7 +88,7 @@
     <div class="row mt-5">
       <div class="col-12 text-center fade-in-up">
         <a href="{% url 'hotels' %}" class="btn-primary-custom btn-lg">
-          <i class="fas fa-hotel me-2"></i>View All Hotels
+          <img src="/static/img/logo" alt="BookMyNest Logo" style="height:1.5rem;vertical-align:middle;margin-right:0.3rem;">View All Hotels
         </a>
         <p class="text-muted mt-3">Explore our complete collection with search and filtering options</p>
       </div>

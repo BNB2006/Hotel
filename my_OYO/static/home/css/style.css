@@ -81,9 +81,6 @@ h1, h2, h3, h4, h5, h6 {
   gap: 0.5rem;
 }
 
-.nav-brand i {
-  font-size: 1.8rem;
-}
 
 .nav-toggle {
   display: none;
