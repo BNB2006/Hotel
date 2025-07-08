@@ -79,22 +79,32 @@
     <div class="tab-pane" id="bookings">
       <h4 class="card-title">Booking History</h4>
       <div class="bookings-list">
-        <div class="booking-card">
-          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80" class="booking-hotel-img" alt="Hotel">
-          <div class="booking-info">
-            <div class="booking-hotel-name">Hotel Paradise</div>
-            <div class="booking-location">Goa, India</div>
-            <div class="booking-dates">12 Jul 2024 - 15 Jul 2024</div>
-            <div class="booking-status status-completed">Completed</div>
-            <div class="booking-amount">₹9,600</div>
-            <div class="booking-actions">
-              <button class="btn-action">View</button>
-              <button class="btn-action">Invoice</button>
-              <button class="btn-action">Review</button>
+        {% if bookings and bookings.exists %}
+          {% for booking in bookings %}
+            <div class="booking-card">
+              <img src="{% if booking.hotel.hotel_images.first %}{{ booking.hotel.hotel_images.first.image.url }}{% else %}https://images.unsplash.com/photo-1566073771259-6a8506099945?auto=format&fit=crop&w=400&q=80{% endif %}" class="booking-hotel-img" alt="Hotel">
+              <div class="booking-info">
+                <div class="booking-hotel-name">{{ booking.hotel.hotel_name }}</div>
+                <div class="booking-location">{{ booking.hotel.hotel_location }}</div>
+                <div class="booking-dates">{{ booking.booking_start_date|date:'d M Y' }} - {{ booking.booking_end_date|date:'d M Y' }}</div>
+                <div class="booking-status status-{{ booking.computed_status }}" style="width:auto;min-width:0;align-self:flex-start;">
+                  {{ booking.computed_status|title }}
+                </div>
+                <div class="booking-amount">₹{{ booking.price|floatformat:0 }}</div>
+                <div class="booking-actions">
+                  <a href="{% url 'hotel_details' booking.hotel.hotel_slug %}" class="btn-action">View</a>
+                  <!-- <button class="btn-action">Invoice</button>
+                  <button class="btn-action">Review</button> -->
+                  {% if booking.computed_status == "upcoming" %}
+                    <a href="{% url 'cancel_booking' booking.id %}" class="btn-action btn-cancel" onclick="return confirm('Are you sure you want to cancel this booking?')">Cancel</a>
+                  {% endif %}
+                </div>
+              </div>
             </div>
-          </div>
-        </div>
-        <!-- More booking cards here -->
+          {% endfor %}
+        {% else %}
+          <div style="text-align:center; color:var(--text-secondary); padding:2rem 0; font-size:1.1rem;">No bookings found yet. Book your first stay!</div>
+        {% endif %}
       </div>
     </div>
     <!-- Settings Tab -->

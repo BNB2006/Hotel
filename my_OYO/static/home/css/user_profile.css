@@ -363,6 +363,11 @@
   color: var(--primary-color);
 }
 
+.status-ongoing {
+  background: rgba(255, 193, 7, 0.2);
+  color: #ffc107;
+}
+
 .status-cancelled {
   background: rgba(239, 68, 68, 0.2);
   color: #ef4444;
@@ -483,36 +488,36 @@
 
 /* Button Styles */
 .btn-action {
-  background: rgba(127, 90, 240, 0.1);
-  color: var(--primary-color);
-  border: 1.5px solid var(--primary-color);
-  border-radius: 8px;
-  padding: 0.5rem 1rem;
-  font-size: 0.9rem;
-  font-weight: 600;
+  padding: 0.4rem 0.8rem;
+  border: 1px solid var(--glass-border);
+  border-radius: 6px;
+  background: rgba(255, 255, 255, 0.1);
+  color: var(--text-primary);
+  text-decoration: none;
+  font-size: 0.85rem;
+  font-weight: 500;
   cursor: pointer;
   transition: all 0.2s;
+  display: inline-block;
 }
 
 .btn-action:hover {
-  background: var(--primary-color, #7F5AF0) !important;
-  color: #fff !important;
+  background: rgba(255, 255, 255, 0.2);
+  border-color: var(--primary-color);
+  color: var(--text-primary);
+  text-decoration: none;
 }
 
-.btn-danger {
+.btn-cancel {
   background: rgba(239, 68, 68, 0.1);
+  border-color: rgba(239, 68, 68, 0.3);
   color: #ef4444;
-  border: 1.5px solid #ef4444;
-  border-radius: 8px;
-  padding: 0.8rem 1.5rem;
-  font-weight: 600;
-  cursor: pointer;
-  transition: all 0.2s;
 }
 
-.btn-danger:hover {
-  background: #ef4444 !important;
-  color: #fff !important;
+.btn-cancel:hover {
+  background: rgba(239, 68, 68, 0.2);
+  border-color: #ef4444;
+  color: #ef4444;
 }
 
 /* Responsive Design */

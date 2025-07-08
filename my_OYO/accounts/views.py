@@ -405,6 +405,9 @@ def user_profile(request):
     user = request.user
     hoteluser = user.hoteluser
     from django.http import JsonResponse
+    from home.models import HotelBooking  # <-- add this import for bookings
+    # Fetch bookings for this user
+    bookings = HotelBooking.objects.filter(booking_user=hoteluser).select_related('hotel').order_by('-booking_start_date')
     if request.method == "POST":
         # Handle AJAX profile picture upload
         if request.FILES.get('profile_picture') and request.POST.get('ajax') == '1':
@@ -429,15 +432,15 @@ def user_profile(request):
         if username and username != user.username:
             if User.objects.filter(username=username).exclude(id=user.id).exists():
                 messages.error(request, "Username is already taken.")
-                return render(request, 'user_profile.html')
+                return render(request, 'user_profile.html', {'bookings': bookings})
         if email and email != user.email:
             if User.objects.filter(email=email).exclude(id=user.id).exists():
                 messages.error(request, "Email is already taken.")
-                return render(request, 'user_profile.html')
+                return render(request, 'user_profile.html', {'bookings': bookings})
         if phone and phone != hoteluser.phone_number:
             if HotelUser.objects.filter(phone_number=phone).exclude(id=hoteluser.id).exists():
                 messages.error(request, "Phone number is already taken.")
-                return render(request, 'user_profile.html')
+                return render(request, 'user_profile.html', {'bookings': bookings})
         # Save changes to User model
         user.first_name = first_name
         user.last_name = last_name
@@ -449,4 +452,27 @@ def user_profile(request):
         hoteluser.save(update_fields=["phone_number"])
         messages.success(request, "Profile updated successfully!")
         return redirect('user_profile')
-    return render(request, 'user_profile.html')
+    return render(request, 'user_profile.html', {'bookings': bookings})
+
+@login_required(login_url='login_page')
+def cancel_booking(request, booking_id):
+    """Cancel a booking by updating its status to cancelled"""
+    if not hasattr(request.user, 'hoteluser'):
+        return HttpResponseForbidden("You are not authorized to view this page.")
+    
+    try:
+        # Get the booking and ensure it belongs to the current user
+        booking = HotelBooking.objects.get(id=booking_id, booking_user=request.user.hoteluser)
+        
+        # Only allow cancellation of upcoming bookings
+        if booking.computed_status == "upcoming":
+            booking.status = "cancelled"
+            booking.save()
+            messages.success(request, f"Booking for {booking.hotel.hotel_name} has been cancelled successfully.")
+        else:
+            messages.error(request, "Only upcoming bookings can be cancelled.")
+            
+    except HotelBooking.DoesNotExist:
+        messages.error(request, "Booking not found.")
+    
+    return redirect('user_profile')

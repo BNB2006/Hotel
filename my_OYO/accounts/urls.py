@@ -8,6 +8,7 @@ urlpatterns = [
     path('verify-otp/', views.verify_otp, name='verify_otp'),  # Changed to not require email in URL
     path('logout/', views.logout_user, name='logout'),
     path('profile/', views.user_profile, name='user_profile'),
+    path('cancel-booking/<int:booking_id>/', views.cancel_booking, name='cancel_booking'),
 
     path('login-vendor/', views.login_vendor, name='login_vendor'),
     path('register-vendor/', views.register_vendor, name='register_vendor'),

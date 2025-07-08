@@ -1,5 +1,6 @@
 from django.db import models
 from accounts.models import Hotel, HotelUser
+from datetime import date
 
 # Create your models here.
 class HotelBooking(models.Model):
@@ -20,4 +21,18 @@ class HotelBooking(models.Model):
 
     def __str__(self):
         return f"Booking #{self.id} - {self.hotel.hotel_name} for {self.booking_user.first_name} ({self.status})"
+    
+    @property
+    def computed_status(self):
+        """Returns the current status based on dates, preserving cancelled status"""
+        today = date.today()
+        if self.status == "cancelled":
+            return "cancelled"
+        if self.booking_start_date > today:
+            return "upcoming"
+        elif self.booking_start_date <= today <= self.booking_end_date:
+            return "ongoing"
+        elif today > self.booking_end_date:
+            return "completed"
+        return self.status
     

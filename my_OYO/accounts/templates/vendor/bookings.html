@@ -111,7 +111,7 @@
             <td data-label="Check-in">{{ booking.booking_start_date|date:'M d, Y' }}</td>
             <td data-label="Check-out">{{ booking.booking_end_date|date:'M d, Y' }}</td>
             <td data-label="Price">₹{{ booking.price|floatformat:2 }}</td>
-            <td data-label="Status">{{ booking.status|title }}</td>
+            <td data-label="Status">{{ booking.computed_status|title }}</td>
             <td data-label="Booked At">{{ booking.created_at|date:'M d, Y H:i' }}</td>
         </tr>
         {% endfor %}
