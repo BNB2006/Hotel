@@ -185,6 +185,12 @@ def register_vendor(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         phone_number = request.POST.get('phone_number')
+        username = request.POST.get('username')
+
+        # Check if username already exists
+        if HotelVendor.objects.filter(username=username).exists() or User.objects.filter(username=username).exists():
+            messages.warning(request, "Username is already taken.")
+            return redirect('/accounts/register-vendor/')
 
         hotel_user = HotelVendor.objects.filter(
             Q(email = email) | Q(phone_number  = phone_number)
@@ -195,7 +201,7 @@ def register_vendor(request):
             return redirect('/accounts/register-vendor/')
 
         hotel_user = HotelVendor.objects.create(
-            username = phone_number,
+            username = username,
             first_name = first_name,
             last_name = last_name,
             email = email,

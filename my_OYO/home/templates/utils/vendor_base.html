@@ -38,12 +38,12 @@
             Bookings
           </a>
         </div>
-        <div class="nav-item">
+        <!-- <div class="nav-item">
           <a href="#" class="nav-link">
             <i class="fas fa-chart-line"></i>
             Analytics
           </a>
-          </div>
+          </div> -->
         <div class="nav-item">
           <a href="{% url 'vendor_settings' %}" class="nav-link {% if request.resolver_match.url_name == 'vendor_settings' %}active{% endif %}">
             <i class="fas fa-cog"></i>
@@ -61,7 +61,7 @@
       <div class="topbar-actions">
         <div class="topbar-user-menu" onclick="toggleProfileCard(event)">
           <i class="fas fa-user-circle"></i>
-          <span class="user-menu-text">{{ vendor.first_name }}</span>
+          <span class="user-menu-text">{{ vendor.username }}</span>
           <i class="fas fa-chevron-down"></i>
         </div>
       </div>

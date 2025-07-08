@@ -31,9 +31,7 @@ def sendEmailToken(request, email, token, user):
 
 def sendOTPtoEmail(email , otp):
     subject = "OTP for Account Login BookMyNest"
-    message = f"""Hi use this otp for login \n\n{otp}\n\n\n\n
-    Thank you.
-    """
+    message = f"""Hi use this otp for login \n\n{otp}\n\n\n\nThank you."""
     send_mail(
         subject,
         message,
