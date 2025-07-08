@@ -1,7 +1,6 @@
 {% extends "utils/vendor_base.html" %}
 
 {% block page_title %}Profile Settings{% endblock %}
-
 {% block start %}
 <div class="dashboard-content">
   <div class="profile-container">
@@ -85,8 +84,8 @@
             <div class="profile-field">
               <label for="email">Email Address</label>
               <div class="readonly-input-wrapper">
-                <input type="email" name="email" id="email" class="profile-input" value="{{ vendor.email }}" readonly>
-                <span class="readonly-lock"><i class="fas fa-lock"></i></span>
+                <input type="email" name="email" id="email" class="profile-input"  style="width: 21rem;" value="{{ vendor.email }}" readonly>
+                <span class="readonly-lock" style="position: absolute;right: 38px;"><i class="fas fa-lock"></i></span>
               </div>
               <small class="readonly-note">Changing email can cause re-vrification of email.</small>
             </div>
@@ -175,7 +174,7 @@
 </div>
 
 <style>
-/* Profile Container */
+  /* Profile Container */
 .profile-container {
   max-width: 100%;
   margin: 0 auto;
@@ -589,10 +588,11 @@
   margin-top: 2px;
   display: block;
 }
+
 </style>
 
 <script>
-// Preview profile picture before upload
+  // Preview profile picture before upload
 const profilePicInput = document.getElementById('profile_picture');
 const profilePicMessage = document.getElementById('profile-pic-message');
 const saveProfileBtn = document.getElementById('saveProfileBtn');

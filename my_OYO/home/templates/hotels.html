@@ -12,8 +12,6 @@
           <option value="">Sort by</option>
           <option value="sort_low" {% if sort_by == 'sort_low' %}selected{% endif %}>Price: Low to High</option>
           <option value="sort_high" {% if sort_by == 'sort_high' %}selected{% endif %}>Price: High to Low</option>
-          <option value="rating" {% if sort_by == 'rating' %}selected{% endif %}>Rating</option>
-          <option value="distance" {% if sort_by == 'distance' %}selected{% endif %}>Distance</option>
         </select>
         <button type="submit" class="btn-primary-custom" style="padding: 8px 18px; font-size: 1rem; border-radius: 8px;">Search</button>
       </form>

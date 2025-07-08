@@ -109,7 +109,7 @@
     </div>
     <!-- Settings Tab -->
     <div class="tab-pane" id="settings">
-      <div class="card settings-form-card">
+      <div class="card settings-form-card" style="border: 1px solid rgb(122, 121, 121);">
         <div class="settings-form-header">
           <span class="settings-form-icon"><i class="fas fa-user-cog"></i></span>
           <h4 class="card-title">Edit Personal Information</h4>
@@ -125,12 +125,15 @@
             <input id="settingsUsername" name="username" type="text" value="{{ user.username }}">
           </div>
           <div class="form-group">
-            <label for="settingsEmail"><i class="fas fa-envelope"></i> Email</label>
-            <input id="settingsEmail" name="email" type="email" value="{{ user.email }}">
-          </div>
-          <div class="form-group">
             <label for="settingsPhone"><i class="fas fa-phone"></i> Phone</label>
             <input id="settingsPhone" name="phone" type="text" value="{{ user.hoteluser.phone_number }}">
+          </div>
+          <div class="form-group">
+            <label for="settingsEmail"><i class="fas fa-envelope"></i> Email</label>
+            <div>
+            <input id="settingsEmail" name="email" type="email" value="{{ user.email }}" readonly>
+            <span class="readonly-lock" style="position: absolute;right: 38px;"><i class="fas fa-lock"></i></span>
+          </div>
           </div>
           <div class="form-divider"></div>
           <button class="save-btn" type="submit"><i class="fas fa-save"></i> Save Changes</button>

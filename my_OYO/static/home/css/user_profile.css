@@ -622,8 +622,6 @@
 
 .settings-form-card {
   padding: 2.2rem 2rem 2rem 2rem;
-  border: none;
-  /* border-radius: 0%; */
   box-shadow: 0 8px 32px rgba(127,90,240,0.08);
   background: var(--card-bg, rgba(255,255,255,0.05));
   display: flex;
