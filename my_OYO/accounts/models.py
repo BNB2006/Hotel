@@ -26,7 +26,7 @@ class HotelVendor(User):
 
 class Ameneties(models.Model):
     name = models.CharField(max_length = 1000)
-    icon = models.ImageField(upload_to="hotels")
+    icon = models.ImageField(upload_to="hotels", null=True)
 
     def __str__(self) -> str: #return a string representation of the amenity name.
         return self.name

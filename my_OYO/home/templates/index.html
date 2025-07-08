@@ -44,8 +44,8 @@
     </div>
     <div class="row">
       {% for hotel in hotels %}
-        <div class="col-lg-3 col-md-6 mb-4 fade-in-up" style="animation-delay: {{ forloop.counter|add:"0.1" }}s;">
-          <div class="hotel-card">
+        <div class="col-lg-3 col-md-6 mb-4 fade-in-up">
+          <div class="hotel-card fade-in-up">
             <a href="{% url 'hotel_details' hotel.hotel_slug %}" style="text-decoration: none; color: inherit;">
               {% if hotel.hotel_images.first %}
                 <img src="/media/{{hotel.hotel_images.first.image}}" class="card-img-top" alt="{{hotel.hotel_name}}">
@@ -67,16 +67,10 @@
                     <span style="color: #b0b0b0; font-size: 0.95rem; margin-left: 4px;">/night</span>
                   {% endif %}
                 </div>
-                <div class="mb-2">
-                  <span class="amenity-badge">
-                    <i class="fas fa-swimming-pool me-1"></i>Pool
-                  </span>
-                  <span class="amenity-badge">
-                    <i class="fas fa-snowflake me-1"></i>AC
-                  </span>
-                  <span class="amenity-badge">
-                    <i class="fas fa-wifi me-1"></i>WiFi
-                  </span>
+                <div class="mb-2"  style="display: flex; flex-wrap:wrap;">
+                  {% for amenetie in hotel.ameneties.all %}
+                  <span class="amenity-badge">{{amenetie.name}}</span>
+                  {% endfor %}
                 </div>
               </div>
             </a>

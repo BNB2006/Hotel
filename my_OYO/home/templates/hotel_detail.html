@@ -52,24 +52,9 @@
         <div class="mb-4">
           <h5 class="mb-3">Amenities</h5>
           <div class="d-flex flex-wrap">
-            <span class="amenity-badge">
-              <i class="fas fa-swimming-pool me-1"></i>Swimming Pool
-            </span>
-            <span class="amenity-badge">
-              <i class="fas fa-snowflake me-1"></i>AC
-            </span>
-            <span class="amenity-badge">
-              <i class="fas fa-wifi me-1"></i>WiFi
-            </span>
-            <span class="amenity-badge">
-              <i class="fas fa-parking me-1"></i>Parking
-            </span>
-            <span class="amenity-badge">
-              <i class="fas fa-utensils me-1"></i>Restaurant
-            </span>
-            <span class="amenity-badge">
-              <i class="fas fa-dumbbell me-1"></i>Gym
-            </span>
+            {% for amenetie in hotel.ameneties.all %}
+                  <span class="amenity-badge">{{amenetie.name}}</span>
+                  {% endfor %}
           </div>
         </div>
 
@@ -132,7 +117,7 @@
         <h3 class="mb-4">Similar Hotels</h3>
         <div class="row">
           <div class="col-md-4 mb-3">
-            <div class="hotel-card">
+            <div class="hotel-card fade-in-up">
               <img src="https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="card-img-top" alt="Similar Hotel">
               <div class="hotel-card-body">
                 <h5 class="hotel-title">Luxury Resort & Spa</h5>
@@ -142,7 +127,7 @@
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <div class="hotel-card">
+            <div class="hotel-card fade-in-up">
               <img src="https://images.unsplash.com/photo-1571896349842-33c89424de2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2068&q=80" class="card-img-top" alt="Similar Hotel">
               <div class="hotel-card-body">
                 <h5 class="hotel-title">Grand Palace Hotel</h5>
@@ -152,7 +137,7 @@
             </div>
           </div>
           <div class="col-md-4 mb-3">
-            <div class="hotel-card">
+            <div class="hotel-card fade-in-up">
               <img src="https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="card-img-top" alt="Similar Hotel">
               <div class="hotel-card-body">
                 <h5 class="hotel-title">Ocean View Resort</h5>
