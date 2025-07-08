@@ -3,6 +3,7 @@ from django.core.mail import send_mail
 from django.conf import settings
 from django.utils.text import slugify
 from .models import Hotel
+from django.urls import reverse
 
 def generateRandomToken():
     return str(uuid.uuid4())
@@ -10,13 +11,15 @@ def generateRandomToken():
 
 
 
-def sendEmailToken(email , token, user):
+def sendEmailToken(request, email, token, user):
     subject = "Verify Your Email Address"
-    message = f"""Hi Please verify you email account by clicking this link 
+    if user == "user":
+        relative_link = reverse('verify_email_token', args=[token]) 
+    else:
+        relative_link = reverse('verify_email_token_vendor', args=[token]) 
 
-    http://127.0.0.1:8000/accounts/verify-{user}/{token}
-    
-    """
+    absolute_link = request.build_absolute_uri(relative_link)
+    message = f"Hi,Welcome to BookMyNest please verify your email account by clicking this link:\n\n{absolute_link}\n"
     send_mail(
        subject,
        message,
@@ -27,9 +30,8 @@ def sendEmailToken(email , token, user):
 
 
 def sendOTPtoEmail(email , otp):
-    subject = "OTP for Account Login"
-    message = f"""Hi use this otp for login
-    {otp}
+    subject = "OTP for Account Login BookMyNest"
+    message = f"""Hi use this otp for login \n\n{otp}\n\n\n\n
     Thank you.
     """
     send_mail(

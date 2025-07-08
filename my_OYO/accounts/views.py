@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 import random
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponseRedirect, JsonResponse, HttpResponseForbidden
+from django.contrib.auth.models import User
 
 # Create your views here.
 def login_page(request):    
@@ -47,6 +48,12 @@ def register(request):
         email = request.POST.get('email')
         password = request.POST.get('password')
         phone_number = request.POST.get('phone_number')
+        username = request.POST.get('username')
+
+        # Check if username already exists
+        if HotelUser.objects.filter(username=username).exists() or User.objects.filter(username=username).exists():
+            messages.warning(request, "Username is already taken.")
+            return redirect('/accounts/register/')
 
         hotel_user = HotelUser.objects.filter(
             Q(email = email) | Q(phone_number  = phone_number)
@@ -57,7 +64,7 @@ def register(request):
             return redirect('/accounts/register/')
 
         hotel_user = HotelUser.objects.create(
-            username = phone_number,
+            username = username,
             first_name = first_name,
             last_name = last_name,
             email = email,
@@ -67,7 +74,7 @@ def register(request):
         hotel_user.set_password(password)
         hotel_user.save()
 
-        sendEmailToken(email , hotel_user.email_token, "user")
+        sendEmailToken(request, email , hotel_user.email_token, "user")
 
         messages.success(request, "An email Sent to your Email")
         return redirect('/accounts/register/')
@@ -199,7 +206,7 @@ def register_vendor(request):
         hotel_user.set_password(password)
         hotel_user.save()
 
-        sendEmailToken(email , hotel_user.email_token, "vendor")
+        sendEmailToken(request, email , hotel_user.email_token, "vendor")
 
         messages.success(request, "An email Sent to your Email")
         return redirect('/accounts/register-vendor/')
@@ -428,7 +435,6 @@ def user_profile(request):
         else:
             first_name = name
         # Uniqueness checks
-        from django.contrib.auth.models import User
         if username and username != user.username:
             if User.objects.filter(username=username).exclude(id=user.id).exists():
                 messages.error(request, "Username is already taken.")

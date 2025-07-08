@@ -21,17 +21,23 @@
       </div>
       <div class="row g-4">
         <div class="col-md-6 form-group">
-          <label for="regEmail"><i class="fas fa-envelope"></i> Email</label>
-          <input type="email" id="regEmail" name="email" required>
+          <label for="regUsername"><i class="fas fa-user-circle"></i> Username</label>
+          <input type="text" id="regUsername" name="username" required autocomplete="off">
         </div>
         <div class="col-md-6 form-group">
           <label for="regPhone"><i class="fas fa-phone"></i> Phone Number</label>
           <input type="text" id="regPhone" name="phone_number" required>
         </div>
       </div>
-      <div class="form-group">
-        <label for="regPassword"><i class="fas fa-lock"></i> Password</label>
-        <input type="password" id="regPassword" name="password" required>
+      <div class="row g-4">
+        <div class="col-md-6 form-group">
+          <label for="regEmail"><i class="fas fa-envelope"></i> Email</label>
+          <input type="email" id="regEmail" name="email" required>
+        </div>
+        <div class="col-md-6 form-group">
+          <label for="regPassword"><i class="fas fa-lock"></i> Password</label>
+          <input type="password" id="regPassword" name="password" required>
+        </div>
       </div>
       <button type="submit" class="btn-primary-custom auth-btn">Register</button>
     </form>
