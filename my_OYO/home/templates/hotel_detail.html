@@ -1,6 +1,6 @@
 <!--home/templates/hotel_detail.html-->
 {% extends "utils/base.html" %}
-
+{% load static %}
 {% block start %}
 <div class="container py-5">
   <div class="row">
@@ -8,19 +8,35 @@
     <div class="col-lg-8 mb-4">
       <div class="glass-card">
         {% if hotel.hotel_images.first %}
-          <img src="/media/{{hotel.hotel_images.first.image}}" class="img-fluid rounded" alt="{{hotel.hotel_name}}" style="width: 100%; height: 400px; object-fit: cover;">
+          <img id="main-image" src="/media/{{hotel.hotel_images.first.image}}" class="img-fluid rounded" alt="{{hotel.hotel_name}}" style="width: 100%; height: 400px; object-fit: cover;">
         {% else %}
-          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="img-fluid rounded" alt="Luxury Hotel" style="width: 100%; height: 400px; object-fit: cover;">
+          <img id="main-image" src="https://images.unsplash.com/photo-1566073771259-6a8506099945?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" class="img-fluid rounded" alt="Luxury Hotel" style="width: 100%; height: 400px; object-fit: cover;">
         {% endif %}
         
         <!-- Additional Images -->
         {% if hotel.hotel_images.count > 1 %}
           <div class="row mt-3">
-            {% for image in hotel.hotel_images.all|slice:"1:5" %}
+            {% for image in hotel.hotel_images.all %}
               <div class="col-3">
-                <img src="/media/{{image.image}}" class="img-fluid rounded" style="height: 100px; width: 100%; object-fit: cover;" alt="Hotel Image">
+                <img src="/media/{{image.image}}" class="img-fluid rounded thumbnail-image" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" alt="Hotel Image" onclick="changeMainImage(this.src, '{{hotel.hotel_name}}')">
               </div>
             {% endfor %}
+          </div>
+          {% else %}
+          <div class="row mt-3">
+            <!-- default images  -->
+              <div class="col-3">
+                <img src="{% static 'img/default_img/img1.jpg' %}" class="img-fluid rounded thumbnail-image" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" alt="Hotel Image" onclick="changeMainImage(this.src, 'Hotel Image 1')">
+              </div>
+              <div class="col-3">
+                <img src="{% static 'img/default_img/img2.jpg' %}" class="img-fluid rounded thumbnail-image" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" alt="Hotel Image" onclick="changeMainImage(this.src, 'Hotel Image 2')">
+              </div>
+              <div class="col-3">
+                <img src="{% static 'img/default_img/img3.jpg' %}" class="img-fluid rounded thumbnail-image" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" alt="Hotel Image" onclick="changeMainImage(this.src, 'Hotel Image 3')">
+              </div>
+              <div class="col-3">
+                <img src="{% static 'img/default_img/img4.jpg' %}" class="img-fluid rounded thumbnail-image" style="height: 100px; width: 100%; object-fit: cover; cursor: pointer;" alt="Hotel Image" onclick="changeMainImage(this.src, 'Hotel Image 4')">
+              </div>
           </div>
         {% endif %}
       </div>
@@ -152,5 +168,79 @@
   </div>
 </div>
 
+{% endblock %}
+
+{% block extra_js %}
+<script>
+function changeMainImage(imageSrc, imageAlt) {
+    console.log('changeMainImage called with:', imageSrc, imageAlt);
+    const mainImage = document.getElementById('main-image');
+    if (mainImage) {
+        console.log('Main image found, changing src to:', imageSrc);
+        
+        // Add visual feedback
+        mainImage.style.transition = 'opacity 0.3s ease';
+        mainImage.style.opacity = '0.7';
+        
+        setTimeout(() => {
+            mainImage.src = imageSrc;
+            mainImage.alt = imageAlt;
+            mainImage.style.opacity = '1';
+        }, 150);
+        
+        // Add click effect to the clicked thumbnail
+        const thumbnails = document.querySelectorAll('.thumbnail-image');
+        thumbnails.forEach(thumb => {
+            thumb.style.border = '2px solid transparent';
+        });
+        
+        // Find and highlight the clicked thumbnail
+        thumbnails.forEach(thumb => {
+            if (thumb.src === imageSrc) {
+                thumb.style.border = '2px solid #e94560';
+                thumb.style.borderRadius = '8px';
+            }
+        });
+        
+    } else {
+        console.error('Main image element not found!');
+    }
+}
+
+// Add hover effect to thumbnail images
+document.addEventListener('DOMContentLoaded', function() {
+    console.log('DOM loaded, setting up thumbnail effects');
+    const thumbnails = document.querySelectorAll('.thumbnail-image');
+    console.log('Found', thumbnails.length, 'thumbnail images');
+    
+    thumbnails.forEach((thumbnail, index) => {
+        console.log(`Setting up thumbnail ${index}:`, thumbnail.src);
+        
+        thumbnail.addEventListener('mouseenter', function() {
+            this.style.transform = 'scale(1.05)';
+            this.style.transition = 'transform 0.2s ease';
+        });
+        
+        thumbnail.addEventListener('mouseleave', function() {
+            this.style.transform = 'scale(1)';
+        });
+        
+        // Add click event listener as backup
+        thumbnail.addEventListener('click', function(e) {
+            e.preventDefault();
+            console.log('Thumbnail clicked:', this.src);
+            changeMainImage(this.src, this.alt);
+        });
+    });
+    
+    // Test if main image exists
+    const mainImage = document.getElementById('main-image');
+    if (mainImage) {
+        console.log('Main image found:', mainImage.src);
+    } else {
+        console.error('Main image not found!');
+    }
+});
+</script>
 {% endblock %}
 
