@@ -1,6 +1,6 @@
 # BookMyNest
 
-BookMyNest is a hotel booking platform that allows users to search, view, and book hotels, while enabling hotel vendors to manage their listings and bookings. This project is under active development.
+BookMyNest is a hotel booking platform that allows users to search, view, and book hotels, while enabling hotel vendors to manage their listings and bookings. Project provide vendors dashboard and User dashboard pages to manage there information.
 
 ---
 
